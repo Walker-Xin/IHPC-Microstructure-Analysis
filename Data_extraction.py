@@ -114,20 +114,6 @@ def width_length_rectangle(image: np.ndarray, label):
     return image
 
 
-# Mock image for testing
-'''test_image = np.array(
-    [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [0, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-    [0, 0, 1, 1, 0, 0, 0, 2, 2, 0],
-    [0, 1, 1, 1, 1, 0, 2, 2, 2, 0],
-    [0, 1, 1, 1, 0, 2, 2, 2, 2, 0],
-    [0, 1, 0, 0, 0, 2, 2, 2, 2, 0],
-    [0, 0, 0, 0, 0, 2, 2, 2, 2, 0],
-    [0, 0, 0, 0, 0, 0, 2, 2, 2, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], np.uint8)'''
-
 # Loading actual marker image
 image = np.load(
     r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Data extraction\Marker_IHPC.npy')
