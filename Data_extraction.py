@@ -82,25 +82,7 @@ def width_length_rectangle(image: np.ndarray, label):
     return rect[1], blank
 
 
-def surround_1(image: np.ndarray, coord: Tuple[int, int]):
-    '''Takes in an array and a pixel's coordinate. Returns an array that contains the pixel itself and its eight surrounding pixels, in total nine.
-    '''
-    lis = coord[0]
-    ele = coord[1]
-    surround_1 = image[lis-1:lis+2, ele-1:ele+2]
-    return surround_1
 
-
-def surround_2(image: np.ndarray, coord: Tuple[int, int]):
-    '''Takes in an array and a pixel's coordinate. Returns an array that contains the pixel itself and its 24 surrounding pixels of two layers, in total 25.
-    '''
-    lis = coord[0]
-    ele = coord[1]
-    surround_2 = image[lis-2:lis+3, ele-2:ele+3]
-    return surround_2
-
-
-def merge(image: np.ndarray, label_small, label_large):
     coordinates = np.where(image == label_small)
     coordinates = list(zip(coordinates[0], coordinates[1]))
 
@@ -150,22 +132,15 @@ def merge(image: np.ndarray, label_small, label_large):
 image = np.load(
     r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Data extraction\Marker_IHPC.npy')
 
+fig, axe = plt.subplots(1, 1, figsize=(15,15))
+axe.imshow(image)
+plt.show()
 
-'''print(area_circumference(image))
+print(area_circumference(image))
 
 for i in range(2, image.max()+1):
     try:
         print(i)
         print(width_length_rectangle(image, i)[0])
     except:
-        pass'''
-
-fig, axe = plt.subplots(1, 1, figsize=(15, 15))
-axe.imshow(image)
-plt.show()
-
-#image = merge(image, 9, 6)
-
-fig, axe = plt.subplots(1, 1, figsize=(15, 15))
-axe.imshow(image)
-plt.show()
+        pass
