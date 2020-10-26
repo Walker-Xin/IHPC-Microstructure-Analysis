@@ -2,24 +2,9 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import timeit
 
 from typing import Dict, List, Optional, Tuple
-
-# Mock image for testing
-test_image = np.array(
-    [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-     [0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-     [0, 1, 1, -1, -1, -1, -1, 1, 1, 0],
-     [0, 1, 1, -1, 2, 2, -1, 1, 1, 0],
-     [0, 0, 1, -1, -1, -1, -1, 1, 1, 0],
-     [0, 1, 1, -1, 3, 3, -1, 1, 1, 0],
-     [0, 1, 1, -1, -1, -1, -1, 1, 1, 0],
-     [0, 1, 1, -1, 4, 4, 4, -1, 1, 0],
-     [0, 0, 0, -1, 4, 4, 4, -1, 0, 0],
-     [0, 0, 0, 0, -1, -1, -1, 0, 0, 0]])
-
-image = np.load(
-    r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Data extraction\Marker_IHPC.npy')
 
 
 def surround_1(image: np.ndarray, coord: Tuple[int, int]):
@@ -124,16 +109,42 @@ def auto_merge(image, threshold):
     
     return image
 
+
+def remove_boundary(image):
+    removed = image
+
+    coordinates = np.where(image == -1)
+    coordinates = list(zip(coordinates[0], coordinates[1])) #Get coordinates of boundary pixels
+
+    for coord in coordinates:
+        neighbours = surround_1(image, coord)
+        unique = np.unique(neighbours)
+        if len(unique) == 2:
+            removed[coord] = unique[1]
+        else:
+            pass
+
+    return removed
+
+
+image = np.load(
+    r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Data extraction\Marker_IHPC.npy')
+
 print(area(image))
+print(len(area(image)))
+
+start = timeit.default_timer()
 
 merged = auto_merge(image, 7000)
+merged = auto_merge(merged, 7000)
+merged = remove_boundary(merged)
+
+stop = timeit.default_timer()
 
 fig, axe = plt.subplots(1, 1, figsize=(15, 15))
 axe.imshow(merged)
 plt.show()
 
 print(area(merged))
-
-plt.imsave('Marker_IHPC_merged.png', merged)
-
-np.save('Marker_IHPC', merged)
+print(len(area(image)))
+print('Time: ', stop - start)
