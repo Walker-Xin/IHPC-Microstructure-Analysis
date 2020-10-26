@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+from openpyxl import Workbook
 
 from typing import Dict, List, Optional, Tuple
 
@@ -41,10 +42,10 @@ def area_circumference(image: np.ndarray):
     ratio = area/circumference
     data = list(zip(region, area, circumference, ratio))
 
-    data_d = {}
+    data_l = []
     for i in range(0, len(data)):
-        data_d[i+1] = data[i]
-    return data_d
+        data_l.append(data[i])
+    return data_l
 
 
 def width_length_ellipse(image: np.ndarray, label):
@@ -57,8 +58,7 @@ def width_length_ellipse(image: np.ndarray, label):
     coordinates = list(zip(result[0], result[1]))
     for coord in coordinates:
         blank[coord] = 1
-    contours, hierarchy = cv2.findContours(
-        blank, cv2.RETR_TREE, cv.CHAIN_APPROX_NONE)
+    contours, hierarchy = cv2.findContours(blank, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     cnt = contours[0]
     ellipse = cv2.fitEllipse(cnt)  # Get data about the geometry of the ellipse
     blank = cv2.ellipse(blank, ellipse, 1, 2)  # Visualise
@@ -82,51 +82,44 @@ def width_length_rectangle(image: np.ndarray, label):
     return rect[1], blank
 
 
+def width_length_size(image):
+    unique = np.unique(image)[2:]
 
-    coordinates = np.where(image == label_small)
-    coordinates = list(zip(coordinates[0], coordinates[1]))
+    data_l = []
 
-    for coord in coordinates:
-        neighbours = surround_1(image, coord)
-        if -1 in neighbours:
-            positions = np.where(neighbours == -1)
-            positions = list(zip(positions[0], positions[1]))
-
-            for i in range(0, len(positions)):
-                x, y = positions[i]
-                x += -1 + coord[0]
-                y += -1 + coord[1]
-                positions[i] = (x, y)
-
-            for i in range(0, len(positions)):
-                if label_large in surround_1(image, positions[i]):
-                    pass
-                else:
-                    positions[i] = 1
-
-            positions = list(filter((1).__ne__, positions))
-            coordinates = coordinates + positions
-            coordinates = list(dict.fromkeys(coordinates))
-
-    for coord in coordinates:
-        image[coord] = label_large
-
-    return image
+    for i in unique:
+        try:
+            data = width_length_ellipse(image, i)[0]
+            data_l.append((i, data[0], data[1], (data[0]+data[1])/2))
+        except:
+            pass
+    
+    return data_l
 
 
 # Loading actual marker image
 image = np.load(
-    r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Data extraction\Marker_IHPC.npy')
+    r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Data extraction\Marker_IHPC_merged.npy')
 
 fig, axe = plt.subplots(1, 1, figsize=(15,15))
 axe.imshow(image)
 plt.show()
 
-print(area_circumference(image))
+ac = area_circumference(image)
+wl = width_length_size(image)
 
-for i in range(2, image.max()+1):
-    try:
-        print(i)
-        print(width_length_rectangle(image, i)[0])
-    except:
-        pass
+data = Workbook()
+ws = data.active
+
+unique = np.unique(image)[2:]
+
+for i in range(len(unique)):
+    ws.cell(row=i+1, column=1, value=ac[i][0])
+    ws.cell(row=i+1, column=2, value=ac[i][1])
+    ws.cell(row=i+1, column=3, value=ac[i][2])
+    ws.cell(row=i+1, column=4, value=ac[i][3])
+    ws.cell(row=i+1, column=5, value=wl[i][1])
+    ws.cell(row=i+1, column=6, value=wl[i][2])
+    ws.cell(row=i+1, column=7, value=wl[i][3])
+
+data.save('Data.xlsx')
