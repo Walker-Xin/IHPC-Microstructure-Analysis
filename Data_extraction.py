@@ -16,7 +16,7 @@ def surround(array: np.ndarray, coord: Tuple[int, int]):
     return surround
 
 
-def area_circumference(image: np.ndarray):
+def area_circumference(image: np.ndarray, visualise = False):
     '''Takes in a labelled marker image. Returns a dictionary that contains the area, circumference and area/circumference ratio of each grain.
     '''
     blank = np.zeros(
@@ -45,8 +45,10 @@ def area_circumference(image: np.ndarray):
     data_l = []
     for i in range(0, len(data)):
         data_l.append(data[i])
-    return data_l
-
+    if visualise == False:
+        return data_l
+    else:
+        return blank
 
 def width_length_ellipse(image: np.ndarray, label, visualise = False):
     '''Takes in a labelled marker image and a specific label. Returns the minor- and major-axis length of an ellipse that will fit the grain with that label.
@@ -128,7 +130,7 @@ def data_extraction(image: np.ndarray, filename):
 image = np.load(
     r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Data extraction\Marker_IHPC_merged.npy')
 
-for i in range(max(np.unique(image))):
+'''for i in range(max(np.unique(image))):
     try:
         ellipse = width_length_ellipse(image, i, visualise=True)
 
@@ -136,4 +138,4 @@ for i in range(max(np.unique(image))):
         axe.imshow(ellipse)
         plt.savefig('ellipse %d.png' % i, dpi=300)
     except:
-        pass
+        pass'''
