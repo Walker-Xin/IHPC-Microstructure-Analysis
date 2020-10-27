@@ -56,16 +56,16 @@ def width_length_ellipse(image: np.ndarray, label, visualise = False):
 
     coordinates = list(zip(result[0], result[1]))
     for coord in coordinates:
-        blank[coord] = 1
+        blank[coord] = 2
     contours, hierarchy = cv2.findContours(blank, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     cnt = contours[0]
     ellipse = cv2.fitEllipse(cnt)  # Get data about the geometry of the ellipse
     blank = cv2.ellipse(blank, ellipse, 1, 2)  # Visualise
     
     if visualise == False:
-    	return ellipse[1]
+        return ellipse[1]
     else:
-    	return blank
+        return blank
 
 
 def width_length_rectangle(image: np.ndarray, label, visualise = False):
@@ -83,9 +83,9 @@ def width_length_rectangle(image: np.ndarray, label, visualise = False):
     blank = cv2.drawContours(blank, [box], 0, (0, 0, 255), 2)
     
     if visualise == False:
-    	return rect[1]
-	else:
-		return blank
+        return rect[1]
+    else:
+        return blank
 
 
 def width_length_size(image: np.ndarray):
@@ -104,22 +104,22 @@ def width_length_size(image: np.ndarray):
 
 
 def data_extraction(image: np.ndarray, filename):
-	wb = Workbook()
-	ws = wb.active
-	
-	ac = area_circumference(image)
-	wl = width_length_size(image)
-	unique = np.unique(image)[2:]
-	
-	for i in range(len(unique)):
-    	ws.cell(row=i+1, column=1, value=ac[i][0])
-    	ws.cell(row=i+1, column=2, value=ac[i][1])
-    	ws.cell(row=i+1, column=3, value=ac[i][2])
-    	ws.cell(row=i+1, column=4, value=ac[i][3])
-    	ws.cell(row=i+1, column=5, value=wl[i][1])
-    	ws.cell(row=i+1, column=6, value=wl[i][2])
-    	ws.cell(row=i+1, column=7, value=wl[i][3])
-    	
+    wb = Workbook()
+    ws = wb.active
+        
+    ac = area_circumference(image)
+    wl = width_length_size(image)
+    unique = np.unique(image)[2:]
+
+    for i in range(len(unique)):
+        ws.cell(row=i+1, column=1, value=ac[i][0])
+        ws.cell(row=i+1, column=2, value=ac[i][1])
+        ws.cell(row=i+1, column=3, value=ac[i][2])
+        ws.cell(row=i+1, column=4, value=ac[i][3])
+        ws.cell(row=i+1, column=5, value=wl[i][1])
+        ws.cell(row=i+1, column=6, value=wl[i][2])
+        ws.cell(row=i+1, column=7, value=wl[i][3])
+        
     wb.save(filename)
     return 'Data saved. Filename:' + filename
 
@@ -132,4 +132,12 @@ fig, axe = plt.subplots(1, 1, figsize=(15,15))
 axe.imshow(image)
 plt.show()
 
-data_extraction(image, 'Data')
+for i in range(max(np.unique(image))):
+    try:
+        ellipse = width_length_ellipse(image, i, visualise=True)
+
+        fig, axe = plt.subplots(1, 1, figsize=(15,15))
+        axe.imshow(ellipse)
+        plt.savefig('ellipse (%d).png' % i, dpi=300)
+    except:
+        pass
