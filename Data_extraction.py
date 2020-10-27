@@ -48,11 +48,10 @@ def area_circumference(image: np.ndarray):
     return data_l
 
 
-def width_length_ellipse(image: np.ndarray, label):
+def width_length_ellipse(image: np.ndarray, label, visualise = False):
     '''Takes in a labelled marker image and a specific label. Returns the minor- and major-axis length of an ellipse that will fit the grain with that label.
     '''
-    blank = np.zeros(
-        image.shape, np.uint8)  # A blank image of the same dimension as the mock image. Used for extraction grain pixels of one label.
+    blank = np.zeros(image.shape, np.uint8)  # A blank image of the same dimension as the mock image. Used for extraction grain pixels of one label.
     result = np.where(image == label)  # Obtain the coordinates of each label
 
     coordinates = list(zip(result[0], result[1]))
@@ -62,12 +61,15 @@ def width_length_ellipse(image: np.ndarray, label):
     cnt = contours[0]
     ellipse = cv2.fitEllipse(cnt)  # Get data about the geometry of the ellipse
     blank = cv2.ellipse(blank, ellipse, 1, 2)  # Visualise
-    return ellipse[1], blank
+    
+    if visualise == False:
+    	return ellipse[1]
+    else:
+    	return blank
 
 
-def width_length_rectangle(image: np.ndarray, label):
-    blank = np.zeros(
-        image.shape, np.uint8)  # A blank image of the same dimension as the mock image. Used for extraction grain pixels of one label.
+def width_length_rectangle(image: np.ndarray, label, visualise = False):
+    blank = np.zeros(image.shape, np.uint8)  # A blank image of the same dimension as the mock image. Used for extraction grain pixels of one label.
     result = np.where(image == label)  # Obtain the coordinates of each label
 
     coordinates = list(zip(result[0], result[1]))
@@ -79,10 +81,14 @@ def width_length_rectangle(image: np.ndarray, label):
     box = cv2.boxPoints(rect)
     box = np.int0(box)
     blank = cv2.drawContours(blank, [box], 0, (0, 0, 255), 2)
-    return rect[1], blank
+    
+    if visualise == False:
+    	return rect[1]
+	else:
+		return blank
 
 
-def width_length_size(image):
+def width_length_size(image: np.ndarray):
     unique = np.unique(image)[2:]
 
     data_l = []
@@ -97,6 +103,27 @@ def width_length_size(image):
     return data_l
 
 
+def data_extraction(image: np.ndarray, filename):
+	wb = Workbook()
+	ws = wb.active
+	
+	ac = area_circumference(image)
+	wl = width_length_size(image)
+	unique = np.unique(image)[2:]
+	
+	for i in range(len(unique)):
+    	ws.cell(row=i+1, column=1, value=ac[i][0])
+    	ws.cell(row=i+1, column=2, value=ac[i][1])
+    	ws.cell(row=i+1, column=3, value=ac[i][2])
+    	ws.cell(row=i+1, column=4, value=ac[i][3])
+    	ws.cell(row=i+1, column=5, value=wl[i][1])
+    	ws.cell(row=i+1, column=6, value=wl[i][2])
+    	ws.cell(row=i+1, column=7, value=wl[i][3])
+    	
+    wb.save(filename)
+    return 'Data saved. Filename:' + filename
+
+
 # Loading actual marker image
 image = np.load(
     r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Data extraction\Marker_IHPC_merged.npy')
@@ -105,21 +132,4 @@ fig, axe = plt.subplots(1, 1, figsize=(15,15))
 axe.imshow(image)
 plt.show()
 
-ac = area_circumference(image)
-wl = width_length_size(image)
-
-data = Workbook()
-ws = data.active
-
-unique = np.unique(image)[2:]
-
-for i in range(len(unique)):
-    ws.cell(row=i+1, column=1, value=ac[i][0])
-    ws.cell(row=i+1, column=2, value=ac[i][1])
-    ws.cell(row=i+1, column=3, value=ac[i][2])
-    ws.cell(row=i+1, column=4, value=ac[i][3])
-    ws.cell(row=i+1, column=5, value=wl[i][1])
-    ws.cell(row=i+1, column=6, value=wl[i][2])
-    ws.cell(row=i+1, column=7, value=wl[i][3])
-
-data.save('Data.xlsx')
+data_extraction(image, 'Data')
