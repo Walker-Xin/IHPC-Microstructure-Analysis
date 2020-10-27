@@ -56,11 +56,11 @@ def width_length_ellipse(image: np.ndarray, label, visualise = False):
 
     coordinates = list(zip(result[0], result[1]))
     for coord in coordinates:
-        blank[coord] = 2
+        blank[coord] = 1
     contours, hierarchy = cv2.findContours(blank, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     cnt = contours[0]
     ellipse = cv2.fitEllipse(cnt)  # Get data about the geometry of the ellipse
-    blank = cv2.ellipse(blank, ellipse, 1, 2)  # Visualise
+    blank = cv2.ellipse(blank, ellipse, 2, 3)  # Visualise
     
     if visualise == False:
         return ellipse[1]
@@ -80,7 +80,7 @@ def width_length_rectangle(image: np.ndarray, label, visualise = False):
     rect = cv2.minAreaRect(cnt)
     box = cv2.boxPoints(rect)
     box = np.int0(box)
-    blank = cv2.drawContours(blank, [box], 0, (0, 0, 255), 2)
+    blank = cv2.drawContours(blank, [box], 0, 2, 3)
     
     if visualise == False:
         return rect[1]
@@ -128,16 +128,12 @@ def data_extraction(image: np.ndarray, filename):
 image = np.load(
     r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Data extraction\Marker_IHPC_merged.npy')
 
-fig, axe = plt.subplots(1, 1, figsize=(15,15))
-axe.imshow(image)
-plt.show()
-
 for i in range(max(np.unique(image))):
     try:
         ellipse = width_length_ellipse(image, i, visualise=True)
 
         fig, axe = plt.subplots(1, 1, figsize=(15,15))
         axe.imshow(ellipse)
-        plt.savefig('ellipse (%d).png' % i, dpi=300)
+        plt.savefig('ellipse %d.png' % i, dpi=300)
     except:
         pass
