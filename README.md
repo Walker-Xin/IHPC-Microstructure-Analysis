@@ -23,8 +23,10 @@ This script conducts watershed transform on a thresholded image, and visualises 
 ### Oversegmentation</span>.py
 
 This script contains the algorithm developed for reducing oversegmentation.
+Labelled regions with an area below the threshold are merged to their surrounding ones. 
 
 ### Data_extraction.py
 
-This script conducts data extraction from the output marker image from the watershed transform.
+This script conducts data extraction from the output marker image from the watershed transform, including area, circumference and diameter.
+It also uses the openpyxl package to export the data to a Microsoft Excel workbook.
 
