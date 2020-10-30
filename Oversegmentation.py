@@ -26,42 +26,21 @@ def surround_2(image: np.ndarray, coord: Tuple[int, int]):
 
 
 def merge(image: np.ndarray, label_small, label_large):
-    '''Takes in an labelled image represented by a numpy array. Merge the region marked by label_small with the region marked by lebel_large. Returns the image after merging.
+    '''Takes in an labelled marker image. Merge the region marked by label_small with the region marked by lebel_large. Returns the image after merging.
     '''
+    # Get coordinates of pixels of label_small
     coordinates = np.where(image == label_small)
-    coordinates = list(zip(coordinates[0], coordinates[1])) #Get coordinates of pixels of label_small
+    coordinates = list(zip(coordinates[0], coordinates[1]))
 
     for coord in coordinates:
-        neighbours = surround_1(image, coord) #Get all label_small pixels
-
-        if -1 in neighbours:
-            positions = np.where(neighbours == -1)
-            positions = list(zip(positions[0], positions[1])) #Get all boundary pixels
-
-            for i in range(0, len(positions)): #Get the coordinates of the boundary pixels
-                x, y = positions[i]
-                x += -1 + coord[0]
-                y += -1 + coord[1]
-                positions[i] = (x, y)
-
-            for i in range(0, len(positions)): #Mark out the boundary pixels that seperate the large region with the small region
-                if label_large in surround_1(image, positions[i]):
-                    pass
-                else:
-                    positions[i] = 1
-
-    positions = list(filter((1).__ne__, positions)) #Remove all the marked boundary pixels
-    coordinates = coordinates + positions
-    coordinates = list(dict.fromkeys(coordinates)) #Combine boundary pixels with label_small pixels
-
-    for coord in coordinates:
-        image[coord] = label_large #Transform values of all pixels to label_large
+        # Transform values of all pixels to label_large
+        image[coord] = label_large
 
     return image
 
 
 def nearest_label(image, label):
-    '''Retrieves the labels of the surrounding regions of an area.
+    '''Takes in a labelled marker image and a label. Retrieves the unique labels in the surrounding regions of an area.
     '''
     coordinates = np.where(image == label)
     coordinates = list(zip(coordinates[0], coordinates[1]))
@@ -72,7 +51,7 @@ def nearest_label(image, label):
         unique += list(np.unique(neighbours))
     unique = list(dict.fromkeys(unique))
 
-    try: #Remove unwanted labels
+    try:  # Remove unwanted labels
         unique.remove(label)
         unique.remove(-1)
         unique.remove(1)
@@ -83,6 +62,8 @@ def nearest_label(image, label):
 
 
 def area(image: np.ndarray):
+    '''Takes in a labelled marker image. Returns a list with tuples that contain a label and its area represented by the number of pixels. 
+    '''
     label, area = np.unique(image, return_counts=True)
     data = list(zip(label, area))
     data = data[2:]
@@ -91,34 +72,44 @@ def area(image: np.ndarray):
 
 
 def auto_merge(image, threshold):
-    areas = area(image)
-    labels = np.unique(image)[2:]
+    '''Takes in a labelled marker image and a threshold. Conducts automatic merging of small regions with large regions. Selection is based on threshold. Returns the merged image. A second round of merging may be required for optimal results.
+    '''
+    areas = area(image)  # Get area data
+    labels = np.unique(image)[2:]  # Get all labels
+
     for label in labels:
-        neighbours = nearest_label(image, label)
-        neighbours_area = []
-        for neighbour in neighbours:
-            neighbours_area.append(areas[neighbour])
-        if areas[label] < threshold:
+        if areas[label] < threshold:  # Check that the current label is small enough
+            # Get surrounding labels for the label
+            neighbours = nearest_label(image, label)
+            neighbours_area = []  # A list containing the area data of the surrounding labels
+            for neighbour in neighbours:
+                neighbours_area.append(areas[neighbour])
             if max(neighbours_area) > threshold:
+                # Get the label of the largest neighbour
                 index = neighbours_area.index(max(neighbours_area))
+                # Merge with the large neighbour
                 merge(image, label, neighbours[index])
             else:
                 pass
         else:
             pass
-    
+
     return image
 
 
 def remove_boundary(image):
+    '''Takes in a labelled marker image. Removes excess boundary lines due to auto merging. Returns the image with excess boundary lines removed.
+    '''
     removed = image
 
+    # Get coordinates of boundary pixels
     coordinates = np.where(image == -1)
-    coordinates = list(zip(coordinates[0], coordinates[1])) #Get coordinates of boundary pixels
+    coordinates = list(zip(coordinates[0], coordinates[1]))
 
     for coord in coordinates:
         neighbours = surround_1(image, coord)
         unique = np.unique(neighbours)
+        # If the number of unique surrounding labels of a boundary pixels (including the label of the pixels itself) is less than 3 (equal to 2), remove it
         if len(unique) == 2:
             removed[coord] = unique[1]
         else:
