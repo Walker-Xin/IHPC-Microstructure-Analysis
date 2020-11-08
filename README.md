@@ -29,3 +29,7 @@ Labelled regions with an area below the threshold are merged to their surroundin
 
 This script conducts data extraction from the output marker image from the watershed transform, including area, circumference and diameter.
 It also uses the openpyxl package to export the data to a Microsoft Excel workbook.
+
+### segmentation.py
+
+This is the all-in-one script that executes all the image processing steps on a microstructure image.
