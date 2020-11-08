@@ -128,7 +128,7 @@ def edge_detect_multi(image_dict: Dict[str, np.ndarray], method: str):
     return new_img_dict
 
 
-def threshold_image(img: np.ndarray, method: str = 'adaptive_gaussian'):
+def threshold(img: np.ndarray, method: str = 'adaptive_gaussian'):
     if method == 'adaptive_gaussian':
         img_threshold = cv2.adaptiveThreshold(
             img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
