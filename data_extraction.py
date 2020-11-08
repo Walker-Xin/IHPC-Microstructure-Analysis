@@ -135,9 +135,5 @@ def data_extraction(image: np.ndarray, filename):
         ws.cell(row=i+1, column=6, value=wl[i][2])
         ws.cell(row=i+1, column=7, value=wl[i][3])
 
-    wb.save(filename)
-    return 'Data saved. Filename:' + filename
-
-image = np.load(r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Data extraction\Marker_IHPC_merged.npy')
-
-print(width_length_size(image))
+    wb.save(filename +'.xlsx')
+    print('Data saved. Filename: ' + filename + '.xlsx')
