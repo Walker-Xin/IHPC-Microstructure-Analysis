@@ -23,8 +23,29 @@ image = cv2.imread(
 denoised = image_processing.denoise(
     image, method='gaussian', ksize=(5, 5), sigmaX=5)
 
+# Intensity histogram of the image
+# Uncomment to visualise the intensity histogram
+'''hist = cv2.calcHist([denoised], [0], None, [256], [0,256])
+hist_norm = hist.ravel()/hist.sum()
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(30,30))
+ax1.imshow(image)
+ax2.plot(hist_norm)
+plt.show()'''
+
 # Thresholding
 thresholded_otsu = image_processing.threshold(denoised, method='Otsu')
+
+# Edge detection
+# Uncomment to visualise canny edge detection
+'''canny = image_processing.edge_detect(denoised, 'canny')
+
+canny_segmented = image
+canny_segmented[canny == 255] = [0, 0, 255]
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(30,30))
+ax1.imshow(canny, cmap='gray')
+ax2.imshow(canny_segmented)
+plt.show()'''
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
