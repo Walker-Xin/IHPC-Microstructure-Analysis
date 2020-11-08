@@ -67,11 +67,11 @@ def fft_filter(img: np.ndarray, mask: np.ndarray) -> Dict[str, np.ndarray]:
     }
 
 
-def FFT_circular(img: np.ndarray, r_range: Tuple[float, float]):
+def fft_circular(img: np.ndarray, r_range: Tuple[float, float]):
     image_fft = fft_filter(img, create_circular_mask(img, r_range))
     return image_fft['After FFT Inverse']
 
 
-def FFT_rectangular(img: np.ndarray, r_masks: List[Tuple[float, float]]):
+def fft_rectangular(img: np.ndarray, r_masks: List[Tuple[float, float]]):
     image_fft = fft_filter(img, create_rectangular_masks(img, r_masks))
     return image_fft['After FFT Inverse']
