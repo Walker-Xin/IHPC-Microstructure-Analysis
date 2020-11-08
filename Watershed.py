@@ -35,9 +35,3 @@ def watershed(img: np.ndarray, img_ori: np.ndarray, thresh = 0.20, kernel: Tuple
 
     return watershed_markers, img_ori, sure_bg, dist, sure_fg, unknown, markers
 
-
-img_ori = cv2.imread(r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Ti6Al4V.png')
-
-img_fft = cv2.imread(r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\blur_gaussian_bilateral\Individual\FFT_Rectangular\Rectangular Mask on Otsu on Gaussian 05.png', 0)
-
-result = watershed(img_fft, img_ori, thresh=0.235, thresh_pre=30, kernel=(3,3), dia_iter=3)
