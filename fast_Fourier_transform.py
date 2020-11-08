@@ -41,6 +41,17 @@ def create_rectangular_masks(img: np.ndarray, r_masks: List[Tuple[float, float]]
     return mask
 
 
+def fft(img: np.ndarray):
+    '''Returns the magnitude spectrum of the fast Fourier transform of an image.
+    '''
+    dft = cv2.dft(np.float32(img), flags=cv2.DFT_COMPLEX_OUTPUT)
+    dft_shift = np.fft.fftshift(dft)
+    magnitude_spectrum = 20 * \
+        np.log(cv2.magnitude(dft_shift[:, :, 0], dft_shift[:, :, 1]))
+
+    return magnitude_spectrum
+
+
 def fft_filter(img: np.ndarray, mask: np.ndarray) -> Dict[str, np.ndarray]:
     dft = cv2.dft(np.float32(img), flags=cv2.DFT_COMPLEX_OUTPUT)
     dft_shift = np.fft.fftshift(dft)
