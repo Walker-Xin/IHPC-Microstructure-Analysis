@@ -107,7 +107,7 @@ def width_length_size(image: np.ndarray):
     for i in unique:
         try:
             # Use width_length_ellipse to generate data for one label
-            data = width_length_ellipse(image, i)[0]
+            data = width_length_ellipse(image, i)
             data_l.append((i, data[0], data[1], (data[0]+data[1])/2))
         except:
             print('Error processing %d' %i)
@@ -138,3 +138,6 @@ def data_extraction(image: np.ndarray, filename):
     wb.save(filename)
     return 'Data saved. Filename:' + filename
 
+image = np.load(r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Data extraction\Marker_IHPC_merged.npy')
+
+print(width_length_size(image))
