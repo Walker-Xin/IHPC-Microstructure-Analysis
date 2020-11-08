@@ -7,6 +7,8 @@ from typing import Dict, List, Optional, Tuple
 
 
 def create_circular_mask(img: np.ndarray, r_range: Tuple[float, float]):
+    '''Create a circular mask with the origin at the centre of the image. r_range indicates the inner and outer radius of the mask.
+    '''
     rows, cols = img.shape
     center = [int(rows/2), int(cols/2)]
     mask = np.zeros((rows, cols, 2), np.int8)
@@ -22,6 +24,10 @@ def create_circular_mask(img: np.ndarray, r_range: Tuple[float, float]):
 
 
 def create_rectangular_masks(img: np.ndarray, r_masks: List[Tuple[float, float]]) -> np.ndarray:
+    '''Create a rectangular mask using the tangent function. 
+    The first variable of r_masks dictates the angle of the rectangle, measured anti-clockwise from the positive y-axis.
+    The second variable of r_masks dictates the width of the rectangle.
+    '''
     rows, cols = img.shape
     center = [int(rows/2), int(cols/2)]
 
@@ -42,7 +48,7 @@ def create_rectangular_masks(img: np.ndarray, r_masks: List[Tuple[float, float]]
 
 
 def fft(img: np.ndarray):
-    '''Returns the magnitude spectrum of the fast Fourier transform of an image.
+    '''Return the magnitude spectrum of the fast Fourier transform of an image.
     '''
     dft = cv2.dft(np.float32(img), flags=cv2.DFT_COMPLEX_OUTPUT)
     dft_shift = np.fft.fftshift(dft)
@@ -53,6 +59,10 @@ def fft(img: np.ndarray):
 
 
 def fft_filter(img: np.ndarray, mask: np.ndarray) -> Dict[str, np.ndarray]:
+    '''Generate the FFT transform of an image, apply a mask on it and generate the reverse FFT transform of the masked frequency image.
+    The input image, frequency image, masked frequency image and the inverse transform are stored in a dictionary.
+    Note that the low frequency parts are shifted to the centre.
+    '''
     dft = cv2.dft(np.float32(img), flags=cv2.DFT_COMPLEX_OUTPUT)
     dft_shift = np.fft.fftshift(dft)
     magnitude_spectrum = 20 * \
@@ -71,18 +81,24 @@ def fft_filter(img: np.ndarray, mask: np.ndarray) -> Dict[str, np.ndarray]:
                        fshift_mask_mag.max()).astype(np.uint8)
     img_back = (img_back*255 / img_back.max()).astype(np.uint8)
     return {
-        'Input Image': img,
-        'After FFT': magnitude_spectrum,
-        'FFT + Mask': fshift_mask_mag,
-        'After FFT Inverse': img_back
+        'input image': img,
+        'after FFT': magnitude_spectrum,
+        'FFT + mask': fshift_mask_mag,
+        'after FFT inverse': img_back
     }
 
 
 def fft_circular(img: np.ndarray, r_range: Tuple[float, float]):
+    '''Conduct FFT transform and frequency domain operations on an image with a circular mask.
+    Returns the FFT inverse of the masked frequency image.
+    '''
     image_fft = fft_filter(img, create_circular_mask(img, r_range))
-    return image_fft['After FFT Inverse']
+    return image_fft['after FFT inverse']
 
 
 def fft_rectangular(img: np.ndarray, r_masks: List[Tuple[float, float]]):
+    '''Conduct FFT transform and frequency domain operations on an image with a rectangular mask.
+    Returns the FFT inverse of the masked frequency image.
+    '''
     image_fft = fft_filter(img, create_rectangular_masks(img, r_masks))
-    return image_fft['After FFT Inverse']
+    return image_fft['after FFT inverse']

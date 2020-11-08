@@ -63,9 +63,12 @@ def nearest_label(image, label):
 def area(image: np.ndarray):
     '''Takes in a labelled marker image. Returns a list with tuples that contain a label and its area represented by the number of pixels. 
     '''
-    label, area = np.unique(image, return_counts=True)
+    label, area = np.unique(
+        image, return_counts=True)  # Get the numbers of pixels with each label
+
     data = list(zip(label, area))
-    data = data[2:]
+    data = data[2:]  # Discard backgroud and boundary pixels
+
     data = {data[i][0]: data[i][1] for i in range(0, len(data))}
     return data
 
@@ -81,8 +84,10 @@ def auto_merge(image, threshold):
             # Get surrounding labels for the label
             neighbours = nearest_label(image, label)
             neighbours_area = []  # A list containing the area data of the surrounding labels
+
             for neighbour in neighbours:
                 neighbours_area.append(areas[neighbour])
+
             if max(neighbours_area) > threshold:
                 # Get the label of the largest neighbour
                 index = neighbours_area.index(max(neighbours_area))

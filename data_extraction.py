@@ -110,7 +110,7 @@ def width_length_size(image: np.ndarray):
             data = width_length_ellipse(image, i)
             data_l.append((i, data[0], data[1], (data[0]+data[1])/2))
         except:
-            print('Error processing %d' %i)
+            print('Error processing %d' % i)
             pass
 
     return data_l
@@ -126,7 +126,7 @@ def data_extraction(image: np.ndarray, filename):
     wl = width_length_size(image)
     unique = np.unique(image)[2:]
 
-    print('There are in total %d grains' %len(unique))
+    print('There are in total %d grains' % len(unique))
 
     for i in range(len(unique)):
         ws.cell(row=i+1, column=1, value=ac[i][0])
@@ -137,5 +137,5 @@ def data_extraction(image: np.ndarray, filename):
         ws.cell(row=i+1, column=6, value=wl[i][2])
         ws.cell(row=i+1, column=7, value=wl[i][3])
 
-    wb.save(filename +'.xlsx')
+    wb.save(filename + '.xlsx')
     print('Data saved. Filename: ' + filename + '.xlsx')

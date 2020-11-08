@@ -10,6 +10,8 @@ from typing import Dict, List, Optional, Tuple
 
 
 def save_images(image_dict: Dict[str, np.ndarray]):
+    '''Save all images in a dictionary.
+    '''
     filtered_dict = image_dict.copy()
     filtered_dict.pop('Original', None)
     for label, image in filtered_dict.items():
@@ -22,6 +24,9 @@ def save_images(image_dict: Dict[str, np.ndarray]):
 
 
 def display_image(img: np.ndarray, figsize: Tuple[int, int] = (10, 7), interpolation: str = 'none', filename: Optional[str] = None):
+    '''Display an image. 
+    If filename is provied, the image is saved with that filename.
+    '''
     fig, ax = plt.subplots(1, 1, figsize=figsize)
     ax.imshow(img, cmap='gray', interpolation=interpolation)
     ax.set_xticks([])
@@ -33,6 +38,9 @@ def display_image(img: np.ndarray, figsize: Tuple[int, int] = (10, 7), interpola
 
 
 def display_image_1D(image_dict: Dict[str, np.ndarray], orientation: str, figsize: Tuple[int, int] = (10, 7), filename: Optional[str] = None):
+    '''Display images in a dictionary in the horizontal or vertical direction. 
+    If filename is provided, the images are saved in one single image file.
+    '''
     n = len(image_dict)
     if orientation == 'horizontal':
         fig, axs = plt.subplots(1, n, figsize=figsize)
@@ -51,6 +59,9 @@ def display_image_1D(image_dict: Dict[str, np.ndarray], orientation: str, figsiz
 
 
 def display_image_2D(image_dict: Dict[str, np.ndarray], rows: int, cols: int, figsize: Tuple[int, int] = (10, 7), filename: Optional[str] = None):
+    '''Display images in a dictionary in a matrix. 
+    If filename is provided, the images are saved in one single image file.
+    '''
     fig, axs = plt.subplots(rows, cols, figsize=figsize)
     row, col = 0, 0
     for title, image in image_dict.items():
@@ -72,6 +83,8 @@ def display_image_2D(image_dict: Dict[str, np.ndarray], rows: int, cols: int, fi
 
 
 def display_image_single(img):
+    '''Display an image with Matplotlib
+    '''
     assert type(img) == np.ndarray
     cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
     cv2.imshow('Image', img)
@@ -81,6 +94,10 @@ def display_image_single(img):
 
 
 def denoise(img: np.ndarray, method: str = 'blur', **kwargs):
+    '''Conduct denoising on an image. 
+    The method string dictates the denoising techinique used. 
+    Keyword arguments are the ones used by that parcicular denoising technique.
+    '''
     if method == 'blur':
         img_denoised = cv2.blur(img, **kwargs)
     elif method == 'gaussian':
@@ -95,6 +112,9 @@ def denoise(img: np.ndarray, method: str = 'blur', **kwargs):
 
 
 def edge_detect(img: np.ndarray, method: str):
+    '''Conduct edge dectection on an image. 
+    The method string dictates the edge detection techinique used.
+    '''
     if method == 'canny':
         edges = cv2.Canny(img, 40, 100, 3)
     elif method == 'sobel16':
@@ -120,6 +140,8 @@ def edge_detect(img: np.ndarray, method: str):
 
 
 def edge_detect_multi(image_dict: Dict[str, np.ndarray], method: str):
+    '''Conduct edge detection on a dictionary of images.
+    '''
     new_img_dict = {}
     method_str = method.title()
     for label, img in image_dict.items():
@@ -129,6 +151,9 @@ def edge_detect_multi(image_dict: Dict[str, np.ndarray], method: str):
 
 
 def threshold(img: np.ndarray, method: str = 'adaptive_gaussian'):
+    '''Conduct thresholding on an image. 
+    The method string dictates the thresholding techinique used, either adaptive Gaussian or Otsu.
+    '''
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     if method == 'adaptive_gaussian':
         img_threshold = cv2.adaptiveThreshold(
@@ -140,6 +165,8 @@ def threshold(img: np.ndarray, method: str = 'adaptive_gaussian'):
 
 
 def threshold_multi(image_dict: Dict[str, np.ndarray], method: str):
+    '''Conduct thresholding on a dictionary of images.
+    '''
     new_img_dict = {}
     method_str = method.title()
     for label, img in image_dict.items():
