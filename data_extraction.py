@@ -110,6 +110,7 @@ def width_length_size(image: np.ndarray):
             data = width_length_ellipse(image, i)[0]
             data_l.append((i, data[0], data[1], (data[0]+data[1])/2))
         except:
+            print('Error processing %d' %i)
             pass
 
     return data_l
