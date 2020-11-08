@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-import timeit
 
 from typing import Dict, List, Optional, Tuple
 
@@ -116,5 +115,3 @@ def remove_boundary(image):
             pass
 
     return removed
-
-
