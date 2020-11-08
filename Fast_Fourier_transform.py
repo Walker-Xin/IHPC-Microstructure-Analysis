@@ -106,18 +106,3 @@ def save_images(image_dict: Dict[str, np.ndarray]):
         cv2.imwrite(
             r'C:/Users/Xin Wenkang/Documents/Scripts/IPHC/Pics/' + filename, image)
         print(f"Saved: '{filename}'")
-
-
-img_05 = cv2.imread(r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\blur_gaussian_bilateral\Individual\Cropped_2\Otsu on Gaussian 05.png', 0)
-img_09 = cv2.imread(r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\blur_gaussian_bilateral\Individual\Cropped_2\Otsu on Gaussian 09.png', 0)
-
-FFT_d_09_rec = fft_filter(img_09, create_rectangular_masks(img_09, r_masks=[(-30, 40), (60, 40), (80, 100)]))
-
-cv2.namedWindow('image', cv2.WINDOW_AUTOSIZE)
-cv2.imshow('image', FFT_d_09_rec['After FFT Inverse'])
-cv2.waitKey()
-
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15,15))
-ax1.imshow(FFT_d_09_rec['After FFT'])
-ax2.imshow(FFT_d_09_rec['FFT + Mask'])
-plt.show()

@@ -118,24 +118,3 @@ def remove_boundary(image):
     return removed
 
 
-image = np.load(
-    r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Data extraction\Marker_IHPC.npy')
-
-print(area(image))
-print(len(area(image)))
-
-start = timeit.default_timer()
-
-merged = auto_merge(image, 7000)
-merged = auto_merge(merged, 7000)
-merged = remove_boundary(merged)
-
-stop = timeit.default_timer()
-
-fig, axe = plt.subplots(1, 1, figsize=(15, 15))
-axe.imshow(merged)
-plt.show()
-
-print(area(merged))
-print(len(area(image)))
-print('Time: ', stop - start)

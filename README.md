@@ -10,7 +10,7 @@ We make use of Python and OpenCV to conduct image analysis. Several algorithms h
 
 ### Image_processing.py
 
-This script entails most of the pre-segmentation processing techniques, including blurring, thresholding and fast Fourier transform (FFT). The display_image and save_images functions allow for batch saving and comparing processed images.
+This script entails most of the pre-segmentation processing techniques, including blurring, thresholding and fast Fourier transform (FFT). The display_image and save_images functions allow for batch saving and comparing of the processed images.
 
 ### Fast_Fourier_Transform.py
 
@@ -23,10 +23,9 @@ This script conducts watershed transform on a thresholded image, and visualises 
 ### Oversegmentation</span>.py
 
 This script contains the algorithm developed for reducing oversegmentation.
-Labelled regions with an area below the threshold are merged to their surrounding ones. 
+Labelled regions with an area below the threshold are merged to their surrounding ones.
 
 ### Data_extraction.py
 
 This script conducts data extraction from the output marker image from the watershed transform, including area, circumference and diameter.
 It also uses the openpyxl package to export the data to a Microsoft Excel workbook.
-

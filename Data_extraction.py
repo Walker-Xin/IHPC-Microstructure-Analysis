@@ -137,17 +137,3 @@ def data_extraction(image: np.ndarray, filename):
     wb.save(filename)
     return 'Data saved. Filename:' + filename
 
-
-# Loading actual marker image
-image = np.load(
-    r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Data extraction\Marker_IHPC_merged.npy')
-
-'''for i in range(max(np.unique(image))):
-    try:
-        ellipse = width_length_ellipse(image, i, visualise=True)
-
-        fig, axe = plt.subplots(1, 1, figsize=(15,15))
-        axe.imshow(ellipse)
-        plt.savefig('ellipse %d.png' % i, dpi=300)
-    except:
-        pass'''

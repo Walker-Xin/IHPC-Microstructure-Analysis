@@ -41,18 +41,3 @@ img_ori = cv2.imread(r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Ti6Al4V.
 img_fft = cv2.imread(r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\blur_gaussian_bilateral\Individual\FFT_Rectangular\Rectangular Mask on Otsu on Gaussian 05.png', 0)
 
 result = watershed(img_fft, img_ori, thresh=0.235, thresh_pre=30, kernel=(3,3), dia_iter=3)
-
-'''cv2.namedWindow('image', cv2.WINDOW_AUTOSIZE)
-cv2.imshow('image', result[1])
-cv2.waitKey()
-
-cv2.imwrite('watershed.png', result[1])'''
-
-fig, axe = plt.subplots(1, 1, figsize=(15,15))
-axe.imshow(result[0])
-plt.savefig('marker.png', dpi=300)
-plt.show()
-
-'''fig, axe = plt.subplots(1, 1, figsize=(15,15))
-axe.imshow(result[6])
-plt.show()'''
