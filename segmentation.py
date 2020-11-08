@@ -1,27 +1,34 @@
+import data_extraction
+import oversegmentation
+import watershed
+import fast_Fourier_transform
+import image_processing
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-imageimport time
+import time
 
 os.chdir(r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Code')
 
 start = time.time()
 
-image = cv2.imread(r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Ti6Al4V.png')
+# Load Image
+image = cv2.imread(
+    r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Ti6Al4V.png')
 
-import image_processing
-import fast_Fourier_transform
-import watershed
-import oversegmentation
-import data_extraction
+#Denoisng
+denoised = image_processing.denoise(
+    image, method='gaussian', ksize=(5, 5), sigmaX=5)
 
-denoised = image_processing.denoise(image, method='gaussian', ksize=(5, 5), sigmaX=5)
-
+#Thresholding
 thresholded_otsu = image_processing.threshold(denoised, method='Otsu')
 
-fft = fast_Fourier_transform.fft_rectangular(thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
+#FFT images
+fft = fast_Fourier_transform.fft_rectangular(
+    thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
 
+#Uncomment to visualise FFT images
 '''masks = fast_Fourier_transform.create_rectangular_masks(thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
 
 fft_comparison = fast_Fourier_transform.fft_filter(thresholded_otsu, masks)
@@ -33,14 +40,19 @@ axs[1,0].imshow(fft['FFT + Mask'])
 axs[1,1].imshow(fft['After FFT Inverse'], cmap='gray')
 plt.show()'''
 
-segmented = watershed.watershed(fft, image, thresh=0.23, kernel=(3,3), thresh_pre=30, dia_iter=3)
+#Segmentation
+segmented = watershed.watershed(
+    fft, image, thresh=0.23, kernel=(3, 3), thresh_pre=30, dia_iter=3)
 
+#Reducing oversegmentation
 merged = oversegmentation.auto_merge(segmented[0], 7000)
 merged = oversegmentation.auto_merge(merged, 7000)
 removed = oversegmentation.remove_boundary(merged)
 
+#Data extraction and saving data
 data_extraction.data_extraction(removed, 'data_test')
 
 end = time.time()
 
+#Print run time
 print(end-start)
