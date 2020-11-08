@@ -75,34 +75,3 @@ def FFT_circular(img: np.ndarray, r_range: Tuple[float, float]):
 def FFT_rectangular(img: np.ndarray, r_masks: List[Tuple[float, float]]):
     image_fft = fft_filter(img, create_rectangular_masks(img, r_masks))
     return image_fft['After FFT Inverse']
-
-
-def display_image_2D(image_dict: Dict[str, np.ndarray], rows: int, cols: int, figsize: Tuple[int, int] = (10, 7), filename: Optional[str] = None):
-    fig, axs = plt.subplots(rows, cols, figsize=figsize)
-    row, col = 0, 0
-    for title, image in image_dict.items():
-        axs[row][col].imshow(image, cmap='gray', interpolation='none')
-        axs[row][col].set_xticks([])
-        axs[row][col].set_yticks([])
-        axs[row][col].set_title(title)
-        col += 1
-        if col == cols:
-            row += 1
-            col = 0
-        if row*cols + col > len(image_dict):
-            print('Not enough rows & columns')
-            print(f'n = {len(image_dict)} > rows={rows} x cols={cols}')
-
-    if filename:
-        plt.savefig(
-            r'C:/Users/Xin Wenkang/Documents/Scripts/IPHC/Pics/' + filename)
-
-
-def save_images(image_dict: Dict[str, np.ndarray]):
-    filtered_dict = image_dict.copy()
-    filtered_dict.pop('Original', None)
-    for label, image in filtered_dict.items():
-        filename = f'{label}.png'
-        cv2.imwrite(
-            r'C:/Users/Xin Wenkang/Documents/Scripts/IPHC/Pics/' + filename, image)
-        print(f"Saved: '{filename}'")
