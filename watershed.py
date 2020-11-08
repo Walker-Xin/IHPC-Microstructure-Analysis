@@ -13,7 +13,7 @@ def watershed(img: np.ndarray, img_ori: np.ndarray, thresh = 0.20, kernel: Tuple
 
     kernel = np.ones(kernel, np.uint8)
 
-    _, img = cv2.threshold(img, thresh_pre, 255, 0)
+    _, img = cv2.threshold(img, thresh_pre, 255, 0, cv2.THRESH_BINARY)
     img = cv2.bitwise_not(img)
     sure_bg = cv2.dilate(img, kernel, iterations = dia_iter)
 
