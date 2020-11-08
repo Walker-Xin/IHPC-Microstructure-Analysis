@@ -126,6 +126,8 @@ def data_extraction(image: np.ndarray, filename):
     wl = width_length_size(image)
     unique = np.unique(image)[2:]
 
+    print('There are in total %d grains' %len(unique))
+
     for i in range(len(unique)):
         ws.cell(row=i+1, column=1, value=ac[i][0])
         ws.cell(row=i+1, column=2, value=ac[i][1])
