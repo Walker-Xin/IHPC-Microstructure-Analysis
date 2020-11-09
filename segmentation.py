@@ -53,16 +53,16 @@ fft = fast_Fourier_transform.fft_rectangular(
     thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
 
 # Uncomment to visualise FFT images
-'''masks = fast_Fourier_transform.create_rectangular_masks(thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
+masks = fast_Fourier_transform.create_rectangular_masks(thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
 
 fft_comparison = fast_Fourier_transform.fft_filter(thresholded_otsu, masks)
 
-fig, axs = plt.subplots(2, 2, figsize=(30,30))
-axs[0,0].imshow(fft['input image'], cmap='gray')
-axs[0,1].imshow(fft['after FFT'])
-axs[1,0].imshow(fft['FFT + mask'])
-axs[1,1].imshow(fft['after FFT inverse'], cmap='gray')
-plt.show()'''
+fig, axs = plt.subplots(2, 2, figsize=(18, 18))
+axs[0,0].imshow(fft_comparison['input image'], cmap='gray')
+axs[0,1].imshow(fft_comparison['after FFT'])
+axs[1,0].imshow(fft_comparison['FFT + mask'])
+axs[1,1].imshow(fft_comparison['after FFT inverse'], cmap='gray')
+plt.show()
 
 # Segmentation
 segmented = watershed.watershed(
