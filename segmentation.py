@@ -16,7 +16,7 @@ os.chdir('Data')
 start = time.time()
 
 # Load Image
-image_name = 'Ti6Al4V.png'
+image_name = 'IHPC.png'
 image = cv2.imread(
     image_name)
 
@@ -53,7 +53,7 @@ fft = fast_Fourier_transform.fft_rectangular(
     thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
 
 # Uncomment to visualise FFT images
-masks = fast_Fourier_transform.create_rectangular_masks(thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
+'''masks = fast_Fourier_transform.create_rectangular_masks(thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
 
 fft_comparison = fast_Fourier_transform.fft_filter(thresholded_otsu, masks)
 
@@ -62,7 +62,7 @@ axs[0,0].imshow(fft_comparison['input image'], cmap='gray')
 axs[0,1].imshow(fft_comparison['after FFT'])
 axs[1,0].imshow(fft_comparison['FFT + mask'])
 axs[1,1].imshow(fft_comparison['after FFT inverse'], cmap='gray')
-plt.show()
+plt.show()'''
 
 # Segmentation
 segmented = watershed.watershed(
@@ -74,9 +74,7 @@ merged = oversegmentation.auto_merge(merged, 7000)
 removed = oversegmentation.remove_boundary(merged)
 
 # Uncomment to visualise watershed segmentation results
-'''fig, axs = plt.subplots(1, 1, figsize=(30,30))
-axs.imshow(removed)
-plt.show()'''
+image_processing.display_image_2D(merged, removed, rows=1, cols=2, filename='Pics/segmentation.png')
 
 # Data extraction and saving data
 data_extraction.data_extraction(removed, 'data_'+image_name)

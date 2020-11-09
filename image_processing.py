@@ -28,13 +28,13 @@ def display_image(img: np.ndarray, figsize: Tuple[int, int] = (10, 7), interpola
     If filename is provied, the image is saved with that filename.
     '''
     fig, ax = plt.subplots(1, 1, figsize=figsize)
-    ax.imshow(img, cmap='gray', interpolation=interpolation)
+    ax.imshow(img)
     ax.set_xticks([])
     ax.set_yticks([])
 
     if filename:
         plt.savefig(
-            r'C:/Users/Xin Wenkang/Documents/Scripts/IPHC/Pics/' + filename)
+            'Data/Pics' + filename)
 
 
 def display_image_1D(image_dict: Dict[str, np.ndarray], orientation: str, figsize: Tuple[int, int] = (10, 7), filename: Optional[str] = None):
@@ -58,37 +58,28 @@ def display_image_1D(image_dict: Dict[str, np.ndarray], orientation: str, figsiz
             r'C:/Users/Xin Wenkang/Documents/Scripts/IPHC/Pics/' + filename)
 
 
-def display_image_2D(image_dict: Dict[str, np.ndarray], rows: int, cols: int, figsize: Tuple[int, int] = (10, 7), filename: Optional[str] = None):
+def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (10, 7), filename: Optional[str] = None):
     '''Display images in a dictionary in a matrix. 
     If filename is provided, the images are saved in one single image file.
     '''
-    fig, axs = plt.subplots(rows, cols, figsize=figsize)
+    fig, axs = plt.subplots(rows, cols, figsize=figsize, squeeze=False)
     row, col = 0, 0
-    for title, image in image_dict.items():
-        axs[row][col].imshow(image, cmap='gray', interpolation='none')
+    for image in images:
+        axs[row][col].imshow(image)
         axs[row][col].set_xticks([])
         axs[row][col].set_yticks([])
-        axs[row][col].set_title(title)
+ 
         col += 1
         if col == cols:
             row += 1
             col = 0
-        if row*cols + col > len(image_dict):
+        if row*cols + col > len(images):
             print('Not enough rows & columns')
-            print(f'n = {len(image_dict)} > rows={rows} x cols={cols}')
-
+    plt.show()
+    
     if filename:
-        plt.savefig(
-            r'C:/Users/Xin Wenkang/Documents/Scripts/IPHC/Pics/' + filename)
+        plt.savefig(filename)
 
-
-def display_image_single(img):
-    '''Display an image with Matplotlib
-    '''
-    assert type(img) == np.ndarray
-    cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
-    cv2.imshow('Image', img)
-    cv2.waitKey()
 
 # Algorithms
 
