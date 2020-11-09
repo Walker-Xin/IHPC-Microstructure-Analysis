@@ -128,14 +128,22 @@ def data_extraction(image: np.ndarray, filename):
 
     print('There are in total %d grains' % len(unique))
 
+    ws.cell(row=1, column=1, value='Grain Number')
+    ws.cell(row=1, column=2, value='Area')
+    ws.cell(row=1, column=3, value='Circumference')
+    ws.cell(row=1, column=4, value='Area/Circumference')
+    ws.cell(row=1, column=5, value='Length')
+    ws.cell(row=1, column=6, value='Width')
+    ws.cell(row=1, column=7, value='Diameter')
+
     for i in range(len(unique)):
-        ws.cell(row=i+1, column=1, value=ac[i][0])
-        ws.cell(row=i+1, column=2, value=ac[i][1])
-        ws.cell(row=i+1, column=3, value=ac[i][2])
-        ws.cell(row=i+1, column=4, value=ac[i][3])
-        ws.cell(row=i+1, column=5, value=wl[i][1])
-        ws.cell(row=i+1, column=6, value=wl[i][2])
-        ws.cell(row=i+1, column=7, value=wl[i][3])
+        ws.cell(row=i+2, column=1, value=ac[i][0])
+        ws.cell(row=i+2, column=2, value=ac[i][1])
+        ws.cell(row=i+2, column=3, value=ac[i][2])
+        ws.cell(row=i+2, column=4, value=ac[i][3])
+        ws.cell(row=i+2, column=5, value=wl[i][1])
+        ws.cell(row=i+2, column=6, value=wl[i][2])
+        ws.cell(row=i+2, column=7, value=wl[i][3])
 
     wb.save(filename + '.xlsx')
     print('Data saved. Filename: ' + filename + '.xlsx')
