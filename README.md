@@ -30,6 +30,10 @@ Labelled regions with an area below the threshold are merged to their surroundin
 This script contains the algorithm used for data extraction.
 It also uses the openpyxl package to export the data to a Microsoft Excel workbook.
 
-### segmentation.py
+### data_generation.py
 
-This is the all-in-one script that executes all the image processing steps on a microstructure image.
+This script generates a Microsoft Excel workbook that contains the microstructural data about the image.
+
+### visualisation.py
+
+This is the script for visualisation of different stages of the image processing and the final result.
