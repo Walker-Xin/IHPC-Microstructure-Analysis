@@ -10,14 +10,15 @@ import watershed
 import fast_Fourier_transform
 import image_processing
 
-os.chdir(r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Code')
+os.chdir('Data')
 
 # Measure run time
 start = time.time()
 
 # Load Image
+image_name = 'Ti6Al4V.png'
 image = cv2.imread(
-    r'C:\Users\Xin Wenkang\Documents\Scripts\IPHC\Pics\Ti6Al4V.png')
+    image_name)
 
 # Denoisng
 denoised = image_processing.denoise(
@@ -78,7 +79,7 @@ axs.imshow(removed)
 plt.show()'''
 
 # Data extraction and saving data
-data_extraction.data_extraction(removed, 'data_test')
+data_extraction.data_extraction(removed, 'data_'+image_name)
 
 end = time.time()
 
