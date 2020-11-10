@@ -19,7 +19,7 @@ start = time.time()
 image_name = 'IHPC.png'
 image = cv2.imread(
     image_name)
-    
+
 os.chdir('Pics')
 
 # Denoisng
@@ -29,24 +29,27 @@ denoised = image_processing.denoise(
 # Thresholding
 thresholded_otsu = image_processing.threshold(denoised, method='Otsu')
 
-#Save denoised and thresholded images
-image_processing.display_image_1D(denoised, thresholded_otsu, filename='denoised_n_thresholded.png')
+# Save denoised and thresholded images
+image_processing.display_image_1D(
+    denoised, thresholded_otsu, filename='denoised_n_thresholded.png')
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
     thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
-    
-masks = fast_Fourier_transform.create_rectangular_masks(thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
+
+masks = fast_Fourier_transform.create_rectangular_masks(
+    thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
 
 fft_comparison = fast_Fourier_transform.fft_filter(thresholded_otsu, masks)
-    
-#Save FFT comparison image
+
+# Save FFT comparison image
 image_processing.display_image_2D(
     fft_comparison['input image'],
     fft_comparison['after FFT'],
     fft_comparison['FFT + mask'],
     fft_comparison['after FFT inverse'],
     rows=2, cols=2,
+    cmap=['gray', None, None, 'gray'],
     filename='FFT.png')
 
 # Segmentation
@@ -58,7 +61,7 @@ merged = oversegmentation.auto_merge(segmented['modified markers'], 7000)
 merged = oversegmentation.auto_merge(merged, 7000)
 removed = oversegmentation.remove_boundary(merged)
 
-#Save segmentation results
+# Save segmentation results
 image_processing.display_image_2D(
     image,
     segmented['segmented image'],

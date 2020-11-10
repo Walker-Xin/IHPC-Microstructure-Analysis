@@ -19,41 +19,20 @@ def save_images(image_dict: Dict[str, np.ndarray]):
         cv2.imwrite(filename, image)
         print(f"Saved: '{filename}'")
 
+
 # Image display
 
 
-def display_image(img: np.ndarray, figsize: Tuple[int, int] = (10, 7), interpolation: str = 'none', filename: Optional[str] = None):
+def display_image(img: np.ndarray, figsize: Tuple[int, int] = (18, 18), cmap: Optional = None, filename: Optional[str] = None):
     '''Display an image. 
+    If cmap string is provided, the image is displayed with that colourmap.
     If filename is provied, the image is saved with that filename.
     '''
     fig, ax = plt.subplots(1, 1, figsize=figsize)
-    ax.imshow(img)
+    ax.imshow(img, cmap=cmap)
     ax.set_xticks([])
     ax.set_yticks([])
-
-    if filename:
-        plt.savefig(filename)
     
-    plt.close()
-
-
-def display_image_1D(*images, figsize: Tuple[int, int] = (10, 7), filename: Optional[str] = None, orientation = 'horizontal'):
-    '''Display multiple images in one direction. 
-    If filename is provided, the images are saved in one single image file.
-    '''
-    n = len(images)
-    i = 0
-    if orientation == 'horizontal':
-        fig, axs = plt.subplots(1, n, figsize=figsize)
-    elif orientation == 'vertical':
-        fig, axs = plt.subplots(n, 1, figsize=figsize)
-
-    for image in images:
-        axs[i].imshow(image, cmap='gray', interpolation='none')
-        axs[i].set_xticks([])
-        axs[i].set_yticks([])
-
-        i += 1
     plt.show()
 
     if filename:
@@ -62,24 +41,76 @@ def display_image_1D(*images, figsize: Tuple[int, int] = (10, 7), filename: Opti
     plt.close()
 
 
-def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (10, 7), filename: Optional[str] = None):
+def display_image_1D(*images, figsize: Tuple[int, int] = (18, 18), orientation='horizontal', cmap: Optional[dict] = None, filename: Optional[str] = None):
+    '''Display multiple images in one direction.
+    If cmap dict is provided, the images are displayed with their corresponding colourmaps.
+    If filename is provided, the images are saved in one single image file.
+    '''
+    n = len(images)
+    i = 0
+    if orientation == 'horizontal':
+        fig, axs = plt.subplots(1, n, figsize=figsize)
+    elif orientation == 'vertical':
+        fig, axs = plt.subplots(n, 1, figsize=figsize)
+    if cmap:
+        assert len(images) == len(
+            cmap), 'Number of colour maps should match number of images'
+        for image in images:
+            axs[i].imshow(image, cmap=cmap[i])
+            axs[i].set_xticks([])
+            axs[i].set_yticks([])
+
+            i += 1
+    else:
+        for image in images:
+            axs[i].imshow(image)
+            axs[i].set_xticks([])
+            axs[i].set_yticks([])
+
+            i += 1
+    plt.show()
+
+    if filename:
+        plt.savefig(filename)
+
+    plt.close()
+
+
+def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (18, 18), cmap: Optional[dict] = None, filename: Optional[str] = None):
     '''Display multiple images in a matrix. 
+    If cmap dict is provided, the images are displayed with their corresponding colourmaps.
     If filename is provided, the images are saved in one single image file.
     '''
     fig, axs = plt.subplots(rows, cols, figsize=figsize, squeeze=False)
-    row, col = 0, 0
+    row, col, i = 0, 0, 0
 
-    for image in images:
-        axs[row][col].imshow(image)
-        axs[row][col].set_xticks([])
-        axs[row][col].set_yticks([])
+    if cmap:
+        assert len(images) == len(
+            cmap), 'Number of colour maps should match number of images'
+        assert len(images) == rows * \
+            cols, 'Product of rows and cols should match numebr of images'
+        for image in images:
+            axs[row][col].imshow(image, cmap=cmap[i])
+            axs[row][col].set_xticks([])
+            axs[row][col].set_yticks([])
 
-        col += 1
-        if col == cols:
-            row += 1
-            col = 0
-        if row*cols + col > len(images):
-            print('Not enough rows & columns')
+            i += 1
+            col += 1
+            if col == cols:
+                row += 1
+                col = 0
+    else:
+        assert len(images) == rows * \
+            cols, 'Product of rows and cols should match numebr of images'
+        for image in images:
+            axs[row][col].imshow(image)
+            axs[row][col].set_xticks([])
+            axs[row][col].set_yticks([])
+
+            col += 1
+            if col == cols:
+                row += 1
+                col = 0
     plt.show()
 
     if filename:
