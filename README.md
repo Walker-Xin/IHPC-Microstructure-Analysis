@@ -38,6 +38,30 @@ This script generates a Microsoft Excel workbook that contains the microstructur
 
 This is the script for visualisation of different stages of the image processing and the final result.
 
+## Parameters
+
+The followings are the tested parameters for segmentation of the IHPC and MIPAR images.
+
+### IHPC
+
+FFT masks: (-52, 60), (75, 45), (89.9, 30), (60, 25)
+
+watershed: fft, image, thresh=0.24, kernel=(3, 3), thresh_pre=25, dia_iter=3
+
+merge: 6500
+
+### MIPAR
+
+FFT masks: (-30, 40), (65, 35), (89.9, 40)
+
+watershed_otsu: thresholded_otsu, image, thresh=0.22, kernel=(5, 5), thresh_pre=30, dia_iter=2
+
+watershed_fft: fft, image, thresh=0.24, kernel=(5, 5), thresh_pre=55, dia_iter=2
+
+merge_otsu: 1000
+
+merge_fft: 1500
+
 ## Acknowledgment
 
 Our project idea was raised during a discussion with our supervising teacher, Dr Nathaniel Ng. We sincerely thank Dr Nathaniel for his guidance and advice. He provided many valuable suggestions on the image processing procedure and on the writing of this report. We thank Institute of Material Research and Engineering of A*STAR for providing us with the IMRE image. We are also grateful to MIPAR for allowing us to use the MIPAR image, one of the many microstructure images available on the website. Lastly, we would like to express our gratitude to Mrs Judy Tan and Mr Goh Kien Soon, both teachers from Nanyang Junior College, for providing us with the opportunity to conduct this research project with Dr Nathaniel.
