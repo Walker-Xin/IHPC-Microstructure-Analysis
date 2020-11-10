@@ -17,6 +17,7 @@ start = time.time()
 
 # Load Image
 image_name = 'IHPC.png'
+name = 'IHPC'
 image = cv2.imread(
     image_name)
 
@@ -41,9 +42,9 @@ merged = oversegmentation.auto_merge(merged, 6500)
 removed = oversegmentation.remove_boundary(merged)
 
 # Data extraction and saving data
-data_extraction.data_extraction(removed, 'data_'+image_name)
+data_extraction.data_extraction(removed, 'data_{}'.format(name))
 
 end = time.time()
 
 # Print run time
-print('Took %g seconds to execute' %round(end-start, 1))
+print('Data generation took %g seconds to execute' %round(end-start, 1))

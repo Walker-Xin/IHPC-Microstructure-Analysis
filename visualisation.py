@@ -15,7 +15,8 @@ os.chdir('Data')
 start = time.time()
 
 # Load Image
-image_name = 'IHPC.png'
+image_name = 'MIPAR_image.png'
+name = 'MIPAR'
 image = cv2.imread(
     image_name)
 image_ori = cv2.imread(
@@ -32,7 +33,11 @@ thresholded_otsu = image_processing.threshold(denoised, method='Otsu')
 
 # Save denoised and thresholded images
 image_processing.display_image_1D(
-    denoised, thresholded_otsu, cmap=[None, 'gray'], filename='denoised_n_thresholded.png')
+    denoised,
+    thresholded_otsu,
+    cmap=[None, 'gray'],
+    filename='denoised_n_thresholded_{}.png'.format(name),
+    visualisation=True)
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
@@ -51,7 +56,8 @@ image_processing.display_image_2D(
     fft_comparison['after FFT inverse'],
     rows=2, cols=2,
     cmap=['gray', None, None, 'gray'],
-    filename='FFT.png')
+    filename='FFT_{}.png'.format(name),
+    visualisation=True)
 
 # Segmentation
 segmented = watershed.watershed(
@@ -70,10 +76,10 @@ image_processing.display_image_2D(
     unmerged,
     removed,
     rows=2, cols=2,
-    filename='segmentation.png',
-    visualisation=False)
+    filename='segmentation_{}.png'.format(name),
+    visualisation=True)
 
 end = time.time()
 
 # Print run time
-print('Took %g seconds to execute.' %round(end-start, 1))
+print('Visualisation took %g seconds to execute.' %round(end-start, 1))
