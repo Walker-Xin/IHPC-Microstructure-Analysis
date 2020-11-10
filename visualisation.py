@@ -76,4 +76,4 @@ image_processing.display_image_2D(
 end = time.time()
 
 # Print run time
-print(end-start)
+print('Took %g seconds to execute.' %round(end-start, 1))

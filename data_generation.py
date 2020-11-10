@@ -46,4 +46,4 @@ data_extraction.data_extraction(removed, 'data_'+image_name)
 end = time.time()
 
 # Print run time
-print(end-start)
+print('Took %g seconds to execute' %round(end-start, 1))
