@@ -37,14 +37,14 @@ image_processing.display_image_1D(
     thresholded_otsu,
     cmap=[None, 'gray'],
     filename='denoised_n_thresholded_{}.png'.format(name),
-    visualisation=True)
+    visualisation=False)
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
-    thresholded_otsu, r_masks=[(-52, 60), (75, 45), (89, 30), (60, 25)])
+    thresholded_otsu, r_masks=[(-30, 40), (65, 35), (89.9, 40)])
 
 masks = fast_Fourier_transform.create_rectangular_masks(
-    thresholded_otsu, r_masks=[(-52, 60), (75, 45), (89, 30), (60, 25)])
+    thresholded_otsu, r_masks=[(-30, 40), (65, 35), (89.9, 40)])
 
 fft_comparison = fast_Fourier_transform.fft_filter(thresholded_otsu, masks)
 
@@ -57,16 +57,16 @@ image_processing.display_image_2D(
     rows=2, cols=2,
     cmap=['gray', None, None, 'gray'],
     filename='FFT_{}.png'.format(name),
-    visualisation=True)
+    visualisation=False)
 
 # Segmentation
 segmented = watershed.watershed(
-    fft, image, thresh=0.24, kernel=(3, 3), thresh_pre=25, dia_iter=3)
+    thresholded_otsu, image, thresh=0.22, kernel=(5, 5), thresh_pre=30, dia_iter=2)
 
 # Reducing oversegmentation
 unmerged = segmented['modified markers']
-merged = oversegmentation.auto_merge(segmented['modified markers'], 6500)
-merged = oversegmentation.auto_merge(merged, 6500)
+merged = oversegmentation.auto_merge(segmented['modified markers'], 1000)
+merged = oversegmentation.auto_merge(merged, 1000)
 removed = oversegmentation.remove_boundary(merged)
 
 # Save segmentation results
@@ -76,8 +76,8 @@ image_processing.display_image_2D(
     unmerged,
     removed,
     rows=2, cols=2,
-    filename='segmentation_{}.png'.format(name),
-    visualisation=True)
+    filename='segmentation_{}_Otsu.png'.format(name),
+    visualisation=False)
 
 end = time.time()
 
