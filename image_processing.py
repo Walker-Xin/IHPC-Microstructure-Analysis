@@ -32,12 +32,11 @@ def display_image(img: np.ndarray, figsize: Tuple[int, int] = (18, 18), cmap: Op
     ax.imshow(img, cmap=cmap)
     ax.set_xticks([])
     ax.set_yticks([])
-    
-    plt.show()
 
     if filename:
         plt.savefig(filename)
 
+    plt.show()
     plt.close()
 
 
@@ -52,6 +51,7 @@ def display_image_1D(*images, figsize: Tuple[int, int] = (18, 18), orientation='
         fig, axs = plt.subplots(1, n, figsize=figsize)
     elif orientation == 'vertical':
         fig, axs = plt.subplots(n, 1, figsize=figsize)
+
     if cmap:
         assert len(images) == len(
             cmap), 'Number of colour maps should match number of images'
@@ -68,11 +68,11 @@ def display_image_1D(*images, figsize: Tuple[int, int] = (18, 18), orientation='
             axs[i].set_yticks([])
 
             i += 1
-    plt.show()
 
     if filename:
         plt.savefig(filename)
 
+    plt.show()
     plt.close()
 
 
@@ -111,11 +111,11 @@ def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (
             if col == cols:
                 row += 1
                 col = 0
-    plt.show()
 
     if filename:
         plt.savefig(filename)
 
+    plt.show()
     plt.close()
 
 

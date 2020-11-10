@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import os
 import time
 
-import data_extraction
 import oversegmentation
 import watershed
 import fast_Fourier_transform
@@ -19,6 +18,8 @@ start = time.time()
 image_name = 'IHPC.png'
 image = cv2.imread(
     image_name)
+image_ori = cv2.imread(
+    image_name)
 
 os.chdir('Pics')
 
@@ -31,7 +32,7 @@ thresholded_otsu = image_processing.threshold(denoised, method='Otsu')
 
 # Save denoised and thresholded images
 image_processing.display_image_1D(
-    denoised, thresholded_otsu, filename='denoised_n_thresholded.png')
+    denoised, thresholded_otsu, cmap=[None, 'gray'], filename='denoised_n_thresholded.png')
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
@@ -54,18 +55,19 @@ image_processing.display_image_2D(
 
 # Segmentation
 segmented = watershed.watershed(
-    fft, image, thresh=0.23, kernel=(3, 3), thresh_pre=30, dia_iter=3)
+    fft, image, thresh=0.24, kernel=(3, 3), thresh_pre=25, dia_iter=3)
 
 # Reducing oversegmentation
-merged = oversegmentation.auto_merge(segmented['modified markers'], 7000)
-merged = oversegmentation.auto_merge(merged, 7000)
+unmerged = segmented['modified markers']
+merged = oversegmentation.auto_merge(segmented['modified markers'], 5000)
+merged = oversegmentation.auto_merge(merged, 5000)
 removed = oversegmentation.remove_boundary(merged)
 
 # Save segmentation results
 image_processing.display_image_2D(
-    image,
+    image_ori,
     segmented['segmented image'],
-    segmented['modified markers'],
+    unmerged,
     removed,
     rows=2, cols=2,
     filename='segmentation.png')
