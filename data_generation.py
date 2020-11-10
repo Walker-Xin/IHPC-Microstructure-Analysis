@@ -33,11 +33,11 @@ fft = fast_Fourier_transform.fft_rectangular(
 
 # Segmentation
 segmented = watershed.watershed(
-    fft, image, thresh=0.23, kernel=(3, 3), thresh_pre=30, dia_iter=3)
+    fft, image, thresh=0.24, kernel=(3, 3), thresh_pre=35, dia_iter=3)
 
 # Reducing oversegmentation
-merged = oversegmentation.auto_merge(segmented['modified markers'], 7000)
-merged = oversegmentation.auto_merge(merged, 7000)
+merged = oversegmentation.auto_merge(segmented['modified markers'], 6500)
+merged = oversegmentation.auto_merge(merged, 6500)
 removed = oversegmentation.remove_boundary(merged)
 
 # Data extraction and saving data
