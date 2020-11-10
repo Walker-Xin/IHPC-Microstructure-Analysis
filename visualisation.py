@@ -55,12 +55,12 @@ image_processing.display_image_2D(
 
 # Segmentation
 segmented = watershed.watershed(
-    fft, image, thresh=0.26, kernel=(3, 3), thresh_pre=25, dia_iter=3)
+    fft, image, thresh=0.24, kernel=(3, 3), thresh_pre=25, dia_iter=3)
 
 # Reducing oversegmentation
 unmerged = segmented['modified markers']
-merged = oversegmentation.auto_merge(segmented['modified markers'], 6500)
-merged = oversegmentation.auto_merge(merged, 6500)
+merged = oversegmentation.auto_merge(segmented['modified markers'], 5000)
+merged = oversegmentation.auto_merge(merged, 5000)
 removed = oversegmentation.remove_boundary(merged)
 
 # Save segmentation results
