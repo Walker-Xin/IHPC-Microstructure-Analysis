@@ -10,14 +10,13 @@ from typing import Dict, List, Optional, Tuple
 
 
 def save_images(image_dict: Dict[str, np.ndarray]):
-    '''Save all images in a dictionary.
+    '''Save all images in a dictionary, which contains the images and their corresponding names.
     '''
     filtered_dict = image_dict.copy()
     filtered_dict.pop('Original', None)
     for label, image in filtered_dict.items():
         filename = f'{label}.png'
-        cv2.imwrite(
-            r'C:/Users/Xin Wenkang/Documents/Scripts/IPHC/Pics/' + filename, image)
+        cv2.imwrite(filename, image)
         print(f"Saved: '{filename}'")
 
 # Image display
