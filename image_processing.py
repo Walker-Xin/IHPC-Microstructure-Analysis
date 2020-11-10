@@ -39,7 +39,7 @@ def display_image(img: np.ndarray, figsize: Tuple[int, int] = (10, 7), interpola
 
 
 def display_image_1D(*images, figsize: Tuple[int, int] = (10, 7), filename: Optional[str] = None, orientation = 'horizontal'):
-    '''Display images in a dictionary in the horizontal or vertical direction. 
+    '''Display multiple images in one direction. 
     If filename is provided, the images are saved in one single image file.
     '''
     n = len(images)
@@ -64,7 +64,7 @@ def display_image_1D(*images, figsize: Tuple[int, int] = (10, 7), filename: Opti
 
 
 def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (10, 7), filename: Optional[str] = None):
-    '''Display images in a dictionary in a matrix. 
+    '''Display multiple images in a matrix. 
     If filename is provided, the images are saved in one single image file.
     '''
     fig, axs = plt.subplots(rows, cols, figsize=figsize, squeeze=False)
