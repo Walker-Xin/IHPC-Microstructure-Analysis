@@ -36,10 +36,10 @@ image_processing.display_image_1D(
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
-    thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
+    thresholded_otsu, r_masks=[(-52, 60), (75, 60), (89, 60), (60, 60)])
 
 masks = fast_Fourier_transform.create_rectangular_masks(
-    thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
+    thresholded_otsu, r_masks=[(-52, 60), (75, 60), (89, 60), (60, 60)])
 
 fft_comparison = fast_Fourier_transform.fft_filter(thresholded_otsu, masks)
 
@@ -71,7 +71,7 @@ image_processing.display_image_2D(
     removed,
     rows=2, cols=2,
     filename='segmentation.png',
-    visualisation=True)
+    visualisation=False)
 
 end = time.time()
 

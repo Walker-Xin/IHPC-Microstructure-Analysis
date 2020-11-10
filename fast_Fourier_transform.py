@@ -36,8 +36,9 @@ def create_rectangular_masks(img: np.ndarray, r_masks: List[Tuple[float, float]]
 
     x0, y0 = center[0], center[1]
     for r_mask in r_masks:
-        theta, delta_y = r_mask
+        theta, width = r_mask
         theta = theta*np.pi/180.0
+        delta_y = width/np.cos(theta)
 
         mask_area = np.logical_and(
             (y <= y0 + np.tan(theta)*(x - x0) + delta_y/2),
