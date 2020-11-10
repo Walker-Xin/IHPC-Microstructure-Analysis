@@ -88,7 +88,7 @@ def auto_merge(image, threshold):
             for neighbour in neighbours:
                 neighbours_area.append(areas[neighbour])
 
-            if max(neighbours_area) > threshold:
+            if len(neighbours_area) > 0 and max(neighbours_area) > threshold:
                 # Get the label of the largest neighbour
                 index = neighbours_area.index(max(neighbours_area))
                 # Merge with the large neighbour
