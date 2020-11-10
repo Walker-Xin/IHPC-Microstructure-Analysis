@@ -1,6 +1,6 @@
 # Microstructure Image Segmentation with Computer Vision Analysis
 
-## NYJC Scientist-in-School with A*STAR
+## NYJC Scientist-in-School with A*STAR IHPC
 
 This is a repository hosting algorithms and codes developed for a student project focusing on segmentation techniques used for titanium alloy microstructure images.
 
@@ -34,6 +34,10 @@ It also uses the openpyxl package to export the data to a Microsoft Excel workbo
 
 This script generates a Microsoft Excel workbook that contains the microstructural data about the image.
 
-### visualisation.py
+### visualisation</span>.py
 
 This is the script for visualisation of different stages of the image processing and the final result.
+
+## Acknowledgment
+
+Our project idea was raised during a discussion with our supervising teacher, Dr Nathaniel Ng. We sincerely thank Dr Nathaniel for his guidance and advice. He provided many valuable suggestions on the image processing procedure and on the writing of this report. We thank Institute of Material Research and Engineering of A*STAR for providing us with the IMRE image. We are also grateful to MIPAR for allowing us to use the MIPAR image, one of the many microstructure images available on the website. Lastly, we would like to express our gratitude to Mrs Judy Tan and Mr Goh Kien Soon, both teachers from Nanyang Junior College, for providing us with the opportunity to conduct this research project with Dr Nathaniel.
