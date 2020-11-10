@@ -23,7 +23,7 @@ def save_images(image_dict: Dict[str, np.ndarray]):
 # Image display
 
 
-def display_image(img: np.ndarray, figsize: Tuple[int, int] = (18, 18), cmap: Optional = None, filename: Optional[str] = None):
+def display_image(img: np.ndarray, figsize: Tuple[int, int] = (18, 18), cmap: Optional = None, filename: Optional[str] = None, visualisation = False):
     '''Display an image. 
     If cmap string is provided, the image is displayed with that colourmap.
     If filename is provied, the image is saved with that filename.
@@ -36,11 +36,12 @@ def display_image(img: np.ndarray, figsize: Tuple[int, int] = (18, 18), cmap: Op
     if filename:
         plt.savefig(filename)
 
-    plt.show()
+    if visualisation:
+        plt.show()
     plt.close()
 
 
-def display_image_1D(*images, figsize: Tuple[int, int] = (18, 18), orientation='horizontal', cmap: Optional[dict] = None, filename: Optional[str] = None):
+def display_image_1D(*images, figsize: Tuple[int, int] = (18, 18), orientation='horizontal', cmap: Optional[dict] = None, filename: Optional[str] = None, visualisation = False):
     '''Display multiple images in one direction.
     If cmap dict is provided, the images are displayed with their corresponding colourmaps.
     If filename is provided, the images are saved in one single image file.
@@ -71,12 +72,13 @@ def display_image_1D(*images, figsize: Tuple[int, int] = (18, 18), orientation='
 
     if filename:
         plt.savefig(filename)
-
-    plt.show()
+        
+    if visualisation:
+        plt.show()
     plt.close()
 
 
-def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (18, 18), cmap: Optional[dict] = None, filename: Optional[str] = None):
+def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (18, 18), cmap: Optional[dict] = None, filename: Optional[str] = None, visualisation = False):
     '''Display multiple images in a matrix. 
     If cmap dict is provided, the images are displayed with their corresponding colourmaps.
     If filename is provided, the images are saved in one single image file.
@@ -114,8 +116,9 @@ def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (
 
     if filename:
         plt.savefig(filename)
-
-    plt.show()
+        
+    if visualisation:
+        plt.show()
     plt.close()
 
 
