@@ -29,7 +29,7 @@ thresholded_otsu = image_processing.threshold(denoised, method='Otsu')
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
-    thresholded_otsu, r_masks=[(-52, 60), (75, 160), (89, 2000), (60, 80)])
+    thresholded_otsu, r_masks=[(-52, 60), (75, 45), (89, 30), (60, 25)])
 
 # Segmentation
 segmented = watershed.watershed(
