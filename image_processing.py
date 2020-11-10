@@ -33,29 +33,34 @@ def display_image(img: np.ndarray, figsize: Tuple[int, int] = (10, 7), interpola
     ax.set_yticks([])
 
     if filename:
-        plt.savefig(
-            'Data/Pics' + filename)
+        plt.savefig(filename)
+    
+    plt.close()
 
 
-def display_image_1D(image_dict: Dict[str, np.ndarray], orientation: str, figsize: Tuple[int, int] = (10, 7), filename: Optional[str] = None):
+def display_image_1D(*images, figsize: Tuple[int, int] = (10, 7), filename: Optional[str] = None, orientation = 'horizontal'):
     '''Display images in a dictionary in the horizontal or vertical direction. 
     If filename is provided, the images are saved in one single image file.
     '''
-    n = len(image_dict)
+    n = len(images)
+    i = 0
     if orientation == 'horizontal':
         fig, axs = plt.subplots(1, n, figsize=figsize)
     elif orientation == 'vertical':
         fig, axs = plt.subplots(n, 1, figsize=figsize)
 
-    for i, (title, image) in enumerate(image_dict.items()):
+    for image in images:
         axs[i].imshow(image, cmap='gray', interpolation='none')
         axs[i].set_xticks([])
         axs[i].set_yticks([])
-        axs[i].set_title(title)
+
+        i += 1
+    plt.show()
 
     if filename:
-        plt.savefig(
-            r'C:/Users/Xin Wenkang/Documents/Scripts/IPHC/Pics/' + filename)
+        plt.savefig(filename)
+
+    plt.close()
 
 
 def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (10, 7), filename: Optional[str] = None):
@@ -64,11 +69,12 @@ def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (
     '''
     fig, axs = plt.subplots(rows, cols, figsize=figsize, squeeze=False)
     row, col = 0, 0
+
     for image in images:
         axs[row][col].imshow(image)
         axs[row][col].set_xticks([])
         axs[row][col].set_yticks([])
- 
+
         col += 1
         if col == cols:
             row += 1
@@ -76,9 +82,11 @@ def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (
         if row*cols + col > len(images):
             print('Not enough rows & columns')
     plt.show()
-    
+
     if filename:
         plt.savefig(filename)
+
+    plt.close()
 
 
 # Algorithms

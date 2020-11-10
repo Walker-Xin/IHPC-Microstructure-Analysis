@@ -30,7 +30,7 @@ denoised = image_processing.denoise(
 thresholded_otsu = image_processing.threshold(denoised, method='Otsu')
 
 #Save denoised and thresholded images
-image_processing.display_image_2D(denoised, thresholded_otsu, rows=1, cols=2, filename='denoised_n_thresholded.png')
+image_processing.display_image_1D(denoised, thresholded_otsu, filename='denoised_n_thresholded.png')
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
