@@ -47,4 +47,4 @@ data_extraction.data_extraction(removed, 'data_{}'.format(name))
 end = time.time()
 
 # Print run time
-print('Data generation took %g seconds to execute' %round(end-start, 1))
+print('Data generation took %g seconds to execute.' %round(end-start, 1))
