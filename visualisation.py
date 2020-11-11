@@ -15,8 +15,8 @@ os.chdir('Data')
 start = time.time()
 
 # Load Image
-image_name = 'MIPAR_image.png'
-name = 'MIPAR'
+image_name = 'IHPC.png'
+name = 'IHPC'
 image = cv2.imread(
     image_name)
 image_ori = cv2.imread(
@@ -41,10 +41,10 @@ image_processing.display_image_1D(
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
-    thresholded_otsu, r_masks=[(-30, 40), (65, 35), (89.9, 40)])
+    thresholded_otsu, r_masks=[(-52, 60), (75, 45), (89.9, 30), (60, 25)])
 
 masks = fast_Fourier_transform.create_rectangular_masks(
-    thresholded_otsu, r_masks=[(-30, 40), (65, 35), (89.9, 40)])
+    thresholded_otsu, r_masks=[(-52, 60), (75, 45), (89.9, 30), (60, 25)])
 
 fft_comparison = fast_Fourier_transform.fft_filter(thresholded_otsu, masks)
 
@@ -61,12 +61,12 @@ image_processing.display_image_2D(
 
 # Segmentation
 segmented = watershed.watershed(
-    thresholded_otsu, image, thresh=0.22, kernel=(5, 5), thresh_pre=30, dia_iter=2)
+    fft, image, thresh=0.24, kernel=(3, 3), thresh_pre=25, dia_iter=3)
 
 # Reducing oversegmentation
 unmerged = segmented['modified markers']
-merged = oversegmentation.auto_merge(segmented['modified markers'], 1000)
-merged = oversegmentation.auto_merge(merged, 1000)
+merged = oversegmentation.auto_merge(segmented['modified markers'], 6500)
+merged = oversegmentation.auto_merge(merged, 6500)
 removed = oversegmentation.remove_boundary(merged)
 
 # Save segmentation results
@@ -77,7 +77,7 @@ image_processing.display_image_2D(
     removed,
     rows=2, cols=2,
     filename='segmentation_{}_Otsu.png'.format(name),
-    visualisation=False)
+    visualisation=True)
 
 end = time.time()
 
