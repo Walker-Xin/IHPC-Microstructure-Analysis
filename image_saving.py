@@ -14,7 +14,8 @@ os.chdir('Data')
 # Setting parameters
 rectangular_masks = [(-52, 60), (75, 45), (89.9, 30), (60, 25)]  # FFT masks
 
-(thersh, kernel, thresh_pre, dia_iter) = (0.24, (3, 3), 25, 3)  # Watershed segmentation
+(thersh, kernel, thresh_pre, dia_iter) = (
+    0.24, (3, 3), 25, 3)  # Watershed segmentation
 
 merge_thresh = 6500
 
