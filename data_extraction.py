@@ -122,8 +122,18 @@ def data_extraction(image: np.ndarray, filename):
     wb = Workbook()
     ws = wb.active
 
-    ac = area_circumference(image)
-    wl = width_length_size(image)
+    ac, wl = (None, None)
+
+    try:
+        ac = area_circumference(image)
+    except:
+        print('Unable to generate area/circumference data.')
+        pass
+    try:
+        wl = width_length_size(image)
+    except:
+        print('Unable to generate width, length and size data.')
+        pass
     unique = np.unique(image)[2:]
 
     print('There are in total %d grains' % len(unique))
@@ -136,14 +146,23 @@ def data_extraction(image: np.ndarray, filename):
     ws.cell(row=1, column=6, value='Width')
     ws.cell(row=1, column=7, value='Diameter')
 
-    for i in range(len(unique)):
-        ws.cell(row=i+2, column=1, value=ac[i][0])
-        ws.cell(row=i+2, column=2, value=ac[i][1])
-        ws.cell(row=i+2, column=3, value=ac[i][2])
-        ws.cell(row=i+2, column=4, value=ac[i][3])
-        ws.cell(row=i+2, column=5, value=wl[i][1])
-        ws.cell(row=i+2, column=6, value=wl[i][2])
-        ws.cell(row=i+2, column=7, value=wl[i][3])
+    if ac:
+        for i in range(len(unique)):
+            ws.cell(row=i+2, column=1, value=ac[i][0])
+            ws.cell(row=i+2, column=2, value=ac[i][1])
+            ws.cell(row=i+2, column=3, value=ac[i][2])
+            ws.cell(row=i+2, column=4, value=ac[i][3])
+    else:
+        pass
+
+    if wl:
+        for i in range(len(unique)):
+            ws.cell(row=i+2, column=1, value=wl[i][0])
+            ws.cell(row=i+2, column=5, value=wl[i][1])
+            ws.cell(row=i+2, column=6, value=wl[i][2])
+            ws.cell(row=i+2, column=7, value=wl[i][3])
+    else:
+        pass
 
     wb.save(filename + '.xlsx')
     print('Data saved. Filename: ' + filename + '.xlsx')
