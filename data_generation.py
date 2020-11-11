@@ -12,6 +12,13 @@ import image_processing
 
 os.chdir('Data')
 
+# Setting parameters
+rectangular_masks = [(-52, 60), (75, 45), (89.9, 30), (60, 25)]  # FFT masks
+
+(thersh, kernel, thresh_pre, dia_iter) = (0.24, (3, 3), 25, 3)  # Watershed segmentation
+
+merge_thresh = 6500
+
 # Measure run time
 start = time.time()
 
@@ -30,15 +37,15 @@ thresholded_otsu = image_processing.threshold(denoised, method='Otsu')
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
-    thresholded_otsu, r_masks=[(-52, 60), (75, 45), (89.9, 30), (60, 25)])
+    thresholded_otsu, r_masks=rectangular_masks)
 
 # Segmentation
 segmented = watershed.watershed(
-    fft, image, thresh=0.24, kernel=(3, 3), thresh_pre=25, dia_iter=3)
+    fft, image, thresh=thersh, kernel=kernel, thresh_pre=thresh_pre, dia_iter=dia_iter)
 
 # Reducing oversegmentation
-merged = oversegmentation.auto_merge(segmented['modified markers'], 6500)
-merged = oversegmentation.auto_merge(merged, 6500)
+merged = oversegmentation.auto_merge(segmented['modified markers'], merge_thresh)
+merged = oversegmentation.auto_merge(merged, merge_thresh)
 removed = oversegmentation.remove_boundary(merged)
 
 # Data extraction and saving data

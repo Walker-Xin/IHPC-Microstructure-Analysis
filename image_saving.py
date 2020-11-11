@@ -43,7 +43,7 @@ image_processing.display_image_1D(
     denoised,
     thresholded_otsu,
     cmap=[None, 'gray'],
-    visualisation=True)
+    filename='denoised_n_thresholded_{}.png'.format(name))
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
@@ -62,7 +62,7 @@ image_processing.display_image_2D(
     fft_comparison['after FFT inverse'],
     rows=2, cols=2,
     cmap=['gray', None, None, 'gray'],
-    visualisation=True)
+    filename='FFT_{}.png'.format(name))
 
 # Segmentation
 segmented = watershed.watershed(
@@ -82,7 +82,7 @@ image_processing.display_image_2D(
     unmerged,
     removed,
     rows=2, cols=2,
-    visualisation=True)
+    filename='segmentation_{}.png'.format(name))
 
 end = time.time()
 

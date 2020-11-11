@@ -44,23 +44,23 @@ The followings are the tested parameters for segmentation of the IHPC and MIPAR 
 
 ### IHPC
 
-FFT masks: (-52, 60), (75, 45), (89.9, 30), (60, 25)
+FFT masks: rectangular_masks = [(-52, 60), (75, 45), (89.9, 30), (60, 25)]
 
-watershed: fft, image, thresh=0.24, kernel=(3, 3), thresh_pre=25, dia_iter=3
+Watershed segmentation (FFT): (thersh, kernel, thresh_pre, dia_iter) = (0.24, (3, 3), 25, 3)
 
-merge: 6500
+Merge threshold (FFT): merge_thresh = 6500
 
 ### MIPAR
 
-FFT masks: (-30, 40), (65, 35), (89.9, 40)
+FFT masks: rectangular_masks = [(-30, 40), (65, 35), (89.9, 40)]
 
-watershed_otsu: thresholded_otsu, image, thresh=0.22, kernel=(5, 5), thresh_pre=30, dia_iter=2
+Watershed segmentation (Otsu): (thersh, kernel, thresh_pre, dia_iter) = (0.22, (5, 5), 30, 2)
 
-watershed_fft: fft, image, thresh=0.24, kernel=(5, 5), thresh_pre=55, dia_iter=2
+Watershed segmentation (FFT): (thersh, kernel, thresh_pre, dia_iter) = (0.24, (5, 5), 55, 2)
 
-merge_otsu: 1000
+Merge threshold (Otsu): merge_thresh = 1000
 
-merge_fft: 1500
+Merge threshold (FFT): merge_thresh = 1500
 
 ## Acknowledgment
 
