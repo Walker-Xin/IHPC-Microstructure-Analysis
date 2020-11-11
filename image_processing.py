@@ -41,9 +41,9 @@ def display_image(img: np.ndarray, figsize: Tuple[int, int] = (18, 18), cmap: Op
     plt.close()
 
 
-def display_image_1D(*images, figsize: Tuple[int, int] = (18, 18), orientation='horizontal', cmap: Optional[dict] = None, filename: Optional[str] = None, visualisation = False):
+def display_image_1D(*images, figsize: Tuple[int, int] = (18, 18), orientation='horizontal', cmap: Optional[list] = None, filename: Optional[str] = None, visualisation = False):
     '''Display multiple images in one direction.
-    If cmap dict is provided, the images are displayed with their corresponding colourmaps.
+    If cmap list is provided, the images are displayed with their corresponding colourmaps.
     If filename is provided, the images are saved in one single image file.
     '''
     n = len(images)
@@ -78,9 +78,9 @@ def display_image_1D(*images, figsize: Tuple[int, int] = (18, 18), orientation='
     plt.close()
 
 
-def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (18, 18), cmap: Optional[dict] = None, filename: Optional[str] = None, visualisation = False):
+def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (18, 18), cmap: Optional[list] = None, filename: Optional[str] = None, visualisation = False):
     '''Display multiple images in a matrix. 
-    If cmap dict is provided, the images are displayed with their corresponding colourmaps.
+    If cmap list is provided, the images are displayed with their corresponding colourmaps.
     If filename is provided, the images are saved in one single image file.
     '''
     fig, axs = plt.subplots(rows, cols, figsize=figsize, squeeze=False)
