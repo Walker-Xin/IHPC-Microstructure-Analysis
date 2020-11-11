@@ -12,19 +12,19 @@ import image_processing
 os.chdir('Data')
 
 # Setting parameters
-rectangular_masks = [(-52, 60), (75, 45), (89.9, 30), (60, 25)]  # FFT masks
+rectangular_masks = [(-30, 50), (65, 45), (89.9, 40)]  # FFT masks
 
 (thersh, kernel, thresh_pre, dia_iter) = (
-    0.24, (3, 3), 25, 3)  # Watershed segmentation
+    0.21, (5, 5), 65, 2)  # Watershed segmentation
 
-merge_thresh = 6500
+merge_thresh = 3000
 
 # Measure run time
 start = time.time()
 
 # Load Image
-image_name = 'IHPC.png'
-name = 'IHPC'
+image_name = 'MIPAR.png'
+name = 'MIPAR'
 image = cv2.imread(
     image_name)
 image_ori = cv2.imread(
@@ -39,12 +39,12 @@ denoised = image_processing.denoise(
 # Thresholding
 thresholded_otsu = image_processing.threshold(denoised, method='Otsu')
 
-# Save denoised and thresholded images
+# Visualise denoised and thresholded images
 image_processing.display_image_1D(
     denoised,
     thresholded_otsu,
     cmap=[None, 'gray'],
-    visualisation=True)
+    visualisation=False)
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
@@ -55,7 +55,7 @@ masks = fast_Fourier_transform.create_rectangular_masks(
 
 fft_comparison = fast_Fourier_transform.fft_filter(thresholded_otsu, masks)
 
-# Save FFT comparison image
+# Visualise FFT comparison image
 image_processing.display_image_2D(
     fft_comparison['input image'],
     fft_comparison['after FFT'],
@@ -63,7 +63,7 @@ image_processing.display_image_2D(
     fft_comparison['after FFT inverse'],
     rows=2, cols=2,
     cmap=['gray', None, None, 'gray'],
-    visualisation=True)
+    visualisation=False)
 
 # Segmentation
 segmented = watershed.watershed(
@@ -71,18 +71,19 @@ segmented = watershed.watershed(
 
 # Reducing oversegmentation
 unmerged = segmented['modified markers']
-merged = oversegmentation.auto_merge(
+'''merged = oversegmentation.auto_merge(
     segmented['modified markers'], merge_thresh)
 merged = oversegmentation.auto_merge(merged, merge_thresh)
-removed = oversegmentation.remove_boundary(merged)
+removed = oversegmentation.remove_boundary(merged)'''
 
-# Save segmentation results
+# Visualise segmentation results
 image_processing.display_image_2D(
     image_ori,
+    fft_comparison['after FFT inverse'],
     segmented['segmented image'],
     unmerged,
-    removed,
     rows=2, cols=2,
+    cmap=[None, 'gray', None, 'gist_ncar'],
     visualisation=True)
 
 end = time.time()

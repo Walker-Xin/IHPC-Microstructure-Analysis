@@ -52,11 +52,11 @@ Merge threshold (FFT): merge_thresh = 6500
 
 ### MIPAR
 
-FFT masks: rectangular_masks = [(-30, 40), (65, 35), (89.9, 40)]
+FFT masks: rectangular_masks = [(-30, 50), (65, 45), (89.9, 40)]
 
 Watershed segmentation (Otsu): (thersh, kernel, thresh_pre, dia_iter) = (0.22, (5, 5), 30, 2)
 
-Watershed segmentation (FFT): (thersh, kernel, thresh_pre, dia_iter) = (0.24, (5, 5), 55, 2)
+Watershed segmentation (FFT): (thersh, kernel, thresh_pre, dia_iter) = (0.21, (5, 5), 65, 2)
 
 Merge threshold (Otsu): merge_thresh = 1000
 
