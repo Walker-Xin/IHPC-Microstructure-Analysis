@@ -50,5 +50,6 @@ def watershed(img: np.ndarray, img_ori: np.ndarray, thresh=0.20, kernel: Tuple =
         'distance transform': dist,
         'sure foreground': sure_fg,
         'unknown': unknown,
-        'markers': connect
+        'markers': connect,
+        'pre-thresholded': img
     }
