@@ -90,7 +90,7 @@ def fft_filter(img: np.ndarray, mask: np.ndarray) -> Dict[str, np.ndarray]:
 
 
 def fft_circular(img: np.ndarray, r_range: Tuple[float, float]):
-    '''Conduct FFT transform and frequency domain operations on an image with a circular mask.
+    '''Conduct FFT transform and frequency domain operations on an image with circular masks.
     Returns the FFT inverse of the masked frequency image.
     '''
     image_fft = fft_filter(img, create_circular_mask(img, r_range))
@@ -98,8 +98,9 @@ def fft_circular(img: np.ndarray, r_range: Tuple[float, float]):
 
 
 def fft_rectangular(img: np.ndarray, r_masks: List[Tuple[float, float]]):
-    '''Conduct FFT transform and frequency domain operations on an image with a rectangular mask.
+    '''Conduct FFT transform and frequency domain operations on an image with rectangular masks.
     Returns the FFT inverse of the masked frequency image.
     '''
     image_fft = fft_filter(img, create_rectangular_masks(img, r_masks))
     return image_fft['after FFT inverse']
+
