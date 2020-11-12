@@ -181,11 +181,6 @@ def data_extraction(image: np.ndarray, filename):
     # Print total number of grains
     print('There are in total {} grains.'.format(len(unique)))
 
-    # Print alpha and beta volume fractions
-    alpha_beta = fore_back(image)
-    print('Alpha volume fraction: {}'.format(round(alpha_beta['foreground fraction'], 2)))
-    print('Beta volume fraction: {}'.format(round(alpha_beta['background fraction'], 2)))
-
     # Ensure that area, circumference and siwidth&length data match. If not, discard circumference or width&length data.
     if len(circum) == len(ar):
         pass
@@ -205,6 +200,10 @@ def data_extraction(image: np.ndarray, filename):
     ws.cell(row=1, column=4, value='Length')
     ws.cell(row=1, column=5, value='Width')
     ws.cell(row=1, column=6, value='Diameter')
+    ws.cell(row=1, column=7, value='Alpha area')
+    ws.cell(row=1, column=8, value='Alpha fraction')
+    ws.cell(row=1, column=9, value='Beta area')
+    ws.cell(row=1, column=10, value='Beta fraction')
 
     # Load the data
     if area:
@@ -225,6 +224,12 @@ def data_extraction(image: np.ndarray, filename):
             ws.cell(row=i+2, column=6, value=wl[i][3])
     else:
         pass
+
+    alpha_beta = fore_back(image)
+    ws.cell(row=2, column=7, value=alpha_beta['foreground area'])
+    ws.cell(row=2, column=8, value=alpha_beta['foreground fraction'])
+    ws.cell(row=2, column=9, value=alpha_beta['background area'])
+    ws.cell(row=2, column=10, value=alpha_beta['background fraction'])
     
     # Save the data
     wb.save(filename + '.xlsx')
