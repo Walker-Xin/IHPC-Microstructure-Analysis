@@ -9,8 +9,6 @@ import watershed
 import fast_Fourier_transform
 import image_processing
 
-os.chdir('Data')
-
 # Setting parameters
 rectangular_masks = [(-30, 50), (65, 45), (89.9, 40)]  # FFT masks
 
@@ -29,8 +27,6 @@ image = cv2.imread(
     image_name)
 image_ori = cv2.imread(
     image_name)
-
-os.chdir('Pics')
 
 # Denoisng
 denoised = image_processing.denoise(

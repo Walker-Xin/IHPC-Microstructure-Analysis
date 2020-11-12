@@ -10,8 +10,6 @@ import watershed
 import fast_Fourier_transform
 import image_processing
 
-os.chdir('Data')
-
 # Setting parameters
 rectangular_masks = [(-30, 50), (65, 45), (89.9, 40)]  # FFT masks
 
@@ -27,7 +25,7 @@ start = time.time()
 image_name = 'MIPAR.png'
 name = 'MIPAR'
 image = cv2.imread(
-    image_name)
+    'Data/' + image_name)
 
 # Denoisng
 denoised = image_processing.denoise(
@@ -51,7 +49,7 @@ merged = oversegmentation.auto_merge(merged, merge_thresh)
 removed = oversegmentation.remove_boundary(merged)
 
 # Data extraction and saving data
-data_extraction.data_extraction(removed, 'data_{}_FFT'.format(name))
+data_extraction.data_extraction(removed, 'Data/data_{}_FFT'.format(name))
 
 end = time.time()
 

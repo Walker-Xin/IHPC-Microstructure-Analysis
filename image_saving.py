@@ -4,12 +4,11 @@ import matplotlib.pyplot as plt
 import os
 import time
 
+import data_extraction
 import oversegmentation
 import watershed
 import fast_Fourier_transform
 import image_processing
-
-os.chdir('Data')
 
 # Setting parameters
 rectangular_masks = [(-30, 50), (65, 45), (89.9, 40)]  # FFT masks
@@ -26,11 +25,9 @@ start = time.time()
 image_name = 'MIPAR.png'
 name = 'MIPAR'
 image = cv2.imread(
-    image_name)
+    'Data/' + image_name)
 image_ori = cv2.imread(
-    image_name)
-
-os.chdir('Pics')
+    'Data/' + image_name)
 
 # Denoisng
 denoised = image_processing.denoise(
@@ -44,7 +41,7 @@ image_processing.display_image_1D(
     denoised,
     thresholded_otsu,
     cmap=[None, 'gray'],
-    filename='denoised_n_thresholded_{}.png'.format(name))
+    filename='Data/Pics/'+'denoised_n_thresholded_{}.png'.format(name))
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
@@ -63,7 +60,7 @@ image_processing.display_image_2D(
     fft_comparison['after FFT inverse'],
     rows=2, cols=2,
     cmap=['gray', None, None, 'gray'],
-    filename='FFT_{}.png'.format(name))
+    filename='Data/Pics/'+'FFT_{}.png'.format(name))
 
 # Segmentation
 segmented = watershed.watershed(
@@ -71,10 +68,10 @@ segmented = watershed.watershed(
 
 # Reducing oversegmentation
 unmerged = segmented['modified markers']
-'''merged = oversegmentation.auto_merge(
+merged = oversegmentation.auto_merge(
     segmented['modified markers'], merge_thresh)
 merged = oversegmentation.auto_merge(merged, merge_thresh)
-removed = oversegmentation.remove_boundary(merged)'''
+removed = oversegmentation.remove_boundary(merged)
 
 # Save segmentation results
 image_processing.display_image_2D(
@@ -84,7 +81,7 @@ image_processing.display_image_2D(
     unmerged,
     rows=2, cols=2,
     cmap=[None, 'gray', None, 'gist_ncar'],
-    filename='segmentation_{}_FFT.png'.format(name))
+    filename='Data/Pics/'+'segmentation_{}_FFT.png'.format(name))
 
 end = time.time()
 
