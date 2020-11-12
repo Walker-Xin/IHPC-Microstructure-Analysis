@@ -86,4 +86,4 @@ image_processing.display_image_2D(
 end = time.time()
 
 # Print run time
-print('Visualisation took %g seconds to execute.' % round(end-start, 1))
+print('Visualisation took {} seconds to execute.'.format(round(end-start, 1)))

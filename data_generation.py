@@ -54,4 +54,4 @@ data_extraction.data_extraction(removed, 'Data/data_{}_FFT'.format(name))
 end = time.time()
 
 # Print run time
-print('Data generation took %g seconds to execute.' % round(end-start, 1))
+print('Data generation took {} seconds to execute.'.format(round(end-start, 1)))

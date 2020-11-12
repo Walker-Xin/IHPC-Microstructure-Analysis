@@ -145,7 +145,7 @@ def width_length_size(image: np.ndarray, method='ellipse'):
                 raise ValueError(
                     'method string must be either <ellipse> or <rectangle>')
         except:
-            print('Error processing %d' % i)
+            print('Error processing label {}'.format(i))
             pass
 
     return data_l
@@ -179,7 +179,7 @@ def data_extraction(image: np.ndarray, filename):
     unique = np.unique(image)[2:]
 
     # Print total number of grains
-    print('There are in total %d grains.' % len(unique))
+    print('There are in total {} grains.'.format(len(unique)))
 
     # Print alpha and beta volume fractions
     alpha_beta = fore_back(image)
