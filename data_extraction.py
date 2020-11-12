@@ -29,6 +29,30 @@ def area(image: np.ndarray):
     return data
 
 
+def fore_back(image: np.ndarray):
+    '''Takes in a labelled marker image. Returns the area fractions of the foreground and the background.
+    Foreground are labelled with integers starting from 2, background with 1 and boundaries with -1.
+    '''
+    # Get total area of labelled regions
+    area_back = np.count_nonzero(image == 1)
+    # Get total area of the image
+    area = image.shape[0] * image.shape[1]
+    # Get total area of background
+    area_fore = area - area_back
+    
+    print(np.count_nonzero(image == 1))
+    print(np.count_nonzero(image != 1))
+    print(image.shape[0] * image.shape[1])
+    
+    return {
+        'foreground area': area_fore,
+        'background area': area_back,
+        'total area': area,
+        'foreground fraction': area_fore/area,
+        'background fraction': area_back/area
+    }
+
+
 def circumference(image: np.ndarray, visualise=False):
     '''Takes in a labelled marker image. Returns a list that contains the circumference of each grain.
     '''
@@ -133,6 +157,7 @@ def width_length_size(image: np.ndarray, method='ellipse'):
 
 def data_extraction(image: np.ndarray, filename):
     '''Takes in a labelled marker image. Saves a Microsoft Excel workbook that contains the grain data in the working directory.
+    Also prints the alpha and beta phase fraction.
     '''
     wb = Workbook()
     ws = wb.active
@@ -156,6 +181,11 @@ def data_extraction(image: np.ndarray, filename):
         print('Unable to generate width, length and size data.')
         pass
     unique = np.unique(image)[2:]
+    
+     # Print alpha and beta volume fractions
+    alpha_beta = fore_back(image)
+    print('Alpha volume fraction: {}'.format(alpha_beta['foreground fraction']))
+    print('Beta volume fraction: {}'.format(alpha_beta['background fraction']))
 
     print('There are in total %d grains' % len(unique))
 
@@ -198,7 +228,7 @@ def data_extraction(image: np.ndarray, filename):
             ws.cell(row=i+2, column=6, value=wl[i][3])
     else:
         pass
-
+    
     # Save the data
     wb.save(filename + '.xlsx')
     print('Data saved. Filename: ' + filename + '.xlsx')
