@@ -16,8 +16,20 @@ def surround(array: np.ndarray, coord: Tuple[int, int]):
     return surround
 
 
-def area_circumference(image: np.ndarray, visualise=False):
-    '''Takes in a labelled marker image. Returns a dictionary that contains the area, circumference and area/circumference ratio of each grain.
+def area(image: np.ndarray):
+    '''Takes in a labelled marker image. Returns a list that contains the area of each grain.
+    '''
+    label, area = np.unique(
+        image, return_counts=True)  # Get the numbers of pixels with each label
+
+    data = list(zip(label, area))
+    data = data[2:]  # Discard backgroud and boundary pixels
+
+    return data
+
+
+def circumference(image: np.ndarray, visualise=False):
+    '''Takes in a labelled marker image. Returns a list that contains the circumference of each grain.
     '''
     blank = np.zeros(
         image.shape, np.uint8)  # A blank image of the same dimension as the mock image. Used for labelling
@@ -35,19 +47,13 @@ def area_circumference(image: np.ndarray, visualise=False):
                 blank[coord] = label_no
 
     # Merge the data
-    region, circumference = np.unique(blank, return_counts=True)
-    circumference = circumference[1:]
-    region, area = np.unique(image, return_counts=True)
-    region = region[2:]
-    area = area[2:]
-    ratio = area/circumference
-    data = list(zip(region, area, circumference, ratio))
+    label, circumference = np.unique(blank, return_counts=True)
+    circumference = circumference[2:]
+    label = label[2:]
+    data = list(zip(label, circumference))
 
-    data_l = []
-    for i in range(0, len(data)):
-        data_l.append(data[i])
     if visualise == False:
-        return data_l
+        return data
     else:
         return blank  # Visualisation of the boundaries
 
@@ -97,7 +103,7 @@ def width_length_rectangle(image: np.ndarray, label, visualise=False):
         return blank
 
 
-def width_length_size(image: np.ndarray):
+def width_length_size(image: np.ndarray, method = 'ellipse'):
     '''Takes in a labelled marker image. Returns a list containing tuples that record the grain label, width, length and average of each grain.
     '''
     unique = np.unique(image)[2:]  # Get all labels
@@ -106,9 +112,15 @@ def width_length_size(image: np.ndarray):
 
     for i in unique:
         try:
-            # Use width_length_ellipse to generate data for one label
-            data = width_length_ellipse(image, i)
-            data_l.append((i, data[0], data[1], (data[0]+data[1])/2))
+            # Use width_length_ellipse or width_length rectangle to generate data for one label
+            if method == 'ellipse':
+                data = width_length_ellipse(image, i)
+                data_l.append((i, data[0], data[1], (data[0]+data[1])/2))
+            elif method == 'rectangle':
+                data = width_length_rectangle(image, i)
+                data_l.append((i, data[0], data[1], (data[0]+data[1])/2))
+            else:
+                raise ValueError('method string must be either <ellipse> or <rectangle>')
         except:
             print('Error processing %d' % i)
             pass
@@ -122,12 +134,17 @@ def data_extraction(image: np.ndarray, filename):
     wb = Workbook()
     ws = wb.active
 
-    ac, wl = (None, None)
+    area, circum, wl = (None, None, None)
 
     try:
-        ac = area_circumference(image)
+        area = area(image)
     except:
-        print('Unable to generate area/circumference data.')
+        print('Unable to generate area data.')
+        pass
+    try:
+        circum = circumference(image)
+    except:
+        print('Unable to generate circum data')
         pass
     try:
         wl = width_length_size(image)
@@ -138,29 +155,41 @@ def data_extraction(image: np.ndarray, filename):
 
     print('There are in total %d grains' % len(unique))
 
+    # Ensure that area, circumference and siwidth&length data match. If not, discard circumference or width&length data.
+    if len(circum) == len(area):
+        pass
+    else:
+        print('Area and circumference data do not match! Discarding circumference data.')
+        circum = None
+    if len(wl) == len(area):
+        pass
+    else:
+        print('Area and width&length data do not match! Discarding width&length data.')
+        wl = None
+
     ws.cell(row=1, column=1, value='Grain Number')
     ws.cell(row=1, column=2, value='Area')
     ws.cell(row=1, column=3, value='Circumference')
-    ws.cell(row=1, column=4, value='Area/Circumference')
-    ws.cell(row=1, column=5, value='Length')
-    ws.cell(row=1, column=6, value='Width')
-    ws.cell(row=1, column=7, value='Diameter')
+    ws.cell(row=1, column=4, value='Length')
+    ws.cell(row=1, column=5, value='Width')
+    ws.cell(row=1, column=6, value='Diameter')
 
-    if ac:
+    if area:
         for i in range(len(unique)):
-            ws.cell(row=i+2, column=1, value=ac[i][0])
-            ws.cell(row=i+2, column=2, value=ac[i][1])
-            ws.cell(row=i+2, column=3, value=ac[i][2])
-            ws.cell(row=i+2, column=4, value=ac[i][3])
+            ws.cell(row=i+2, column=1, value=area[i][0])
+            ws.cell(row=i+2, column=2, value=area[i][1])
     else:
         pass
-
+    if circum:
+        for i in range(len(unique)):
+            ws.cell(row=i+2, column=3, value=circum[i][1])
+    else:
+        pass
     if wl:
         for i in range(len(unique)):
-            ws.cell(row=i+2, column=1, value=wl[i][0])
-            ws.cell(row=i+2, column=5, value=wl[i][1])
-            ws.cell(row=i+2, column=6, value=wl[i][2])
-            ws.cell(row=i+2, column=7, value=wl[i][3])
+            ws.cell(row=i+2, column=4, value=wl[i][1])
+            ws.cell(row=i+2, column=5, value=wl[i][2])
+            ws.cell(row=i+2, column=6, value=wl[i][3])
     else:
         pass
 
