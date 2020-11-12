@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import os
 import time
 
+import data_extraction
 import oversegmentation
 import watershed
 import fast_Fourier_transform
@@ -75,11 +76,11 @@ removed = oversegmentation.remove_boundary(merged)
 # Visualise segmentation results
 image_processing.display_image_2D(
     fft_comparison['after FFT inverse'],
+    segmented['pre_thresholded'],
     segmented['segmented image'],
-    unmerged,
     removed,
     rows=2, cols=2,
-    cmap=['gray', None, 'gist_ncar', 'gist_ncar'],
+    cmap=['gray', 'gray', 'gist_ncar', 'gist_ncar'],
     visualisation=True)
 
 end = time.time()

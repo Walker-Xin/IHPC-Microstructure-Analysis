@@ -75,12 +75,12 @@ removed = oversegmentation.remove_boundary(merged)
 
 # Save segmentation results
 image_processing.display_image_2D(
-    image_ori,
     fft_comparison['after FFT inverse'],
+    segmented['pre_thresholded'],
     segmented['segmented image'],
-    unmerged,
+    removed,
     rows=2, cols=2,
-    cmap=[None, 'gray', None, 'gist_ncar'],
+    cmap=['gray', 'gray', 'gist_ncar', 'gist_ncar'],
     filename='Data/Pics/'+'segmentation_{}_FFT.png'.format(name))
 
 end = time.time()
