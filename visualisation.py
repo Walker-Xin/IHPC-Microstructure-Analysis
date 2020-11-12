@@ -15,7 +15,7 @@ rectangular_masks = [(-30, 50), (65, 45), (89.9, 40)]  # FFT masks
 (thersh, kernel, thresh_pre, dia_iter) = (
     0.21, (5, 5), 65, 2)  # Watershed segmentation
 
-merge_thresh = 3000
+merge_thresh = 800
 
 # Measure run time
 start = time.time()
@@ -24,9 +24,9 @@ start = time.time()
 image_name = 'MIPAR.png'
 name = 'MIPAR'
 image = cv2.imread(
-    image_name)
+    'Data/' + image_name)
 image_ori = cv2.imread(
-    image_name)
+    'Data/' + image_name)
 
 # Denoisng
 denoised = image_processing.denoise(
@@ -40,7 +40,7 @@ image_processing.display_image_1D(
     denoised,
     thresholded_otsu,
     cmap=[None, 'gray'],
-    visualisation=False)
+    visualisation=True)
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
@@ -59,7 +59,7 @@ image_processing.display_image_2D(
     fft_comparison['after FFT inverse'],
     rows=2, cols=2,
     cmap=['gray', None, None, 'gray'],
-    visualisation=False)
+    visualisation=True)
 
 # Segmentation
 segmented = watershed.watershed(
@@ -67,19 +67,19 @@ segmented = watershed.watershed(
 
 # Reducing oversegmentation
 unmerged = segmented['modified markers']
-'''merged = oversegmentation.auto_merge(
+merged = oversegmentation.auto_merge(
     segmented['modified markers'], merge_thresh)
 merged = oversegmentation.auto_merge(merged, merge_thresh)
-removed = oversegmentation.remove_boundary(merged)'''
+removed = oversegmentation.remove_boundary(merged)
 
 # Visualise segmentation results
 image_processing.display_image_2D(
-    image_ori,
     fft_comparison['after FFT inverse'],
     segmented['segmented image'],
     unmerged,
+    removed,
     rows=2, cols=2,
-    cmap=[None, 'gray', None, 'gist_ncar'],
+    cmap=['gray', None, 'gist_ncar', 'gist_ncar'],
     visualisation=True)
 
 end = time.time()
