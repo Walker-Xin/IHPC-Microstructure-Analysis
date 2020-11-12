@@ -19,11 +19,12 @@ def surround(array: np.ndarray, coord: Tuple[int, int]):
 def area(image: np.ndarray):
     '''Takes in a labelled marker image. Returns a list that contains the area of each grain.
     '''
-    label, area = np.unique(
-        image, return_counts=True)  # Get the numbers of pixels with each label
+    # Get the numbers of pixels with each label
+    label, area = np.unique(image, return_counts=True)
 
     data = list(zip(label, area))
-    data = data[2:]  # Discard backgroud and boundary pixels
+    # Discard backgroud and boundary pixels
+    data = data[2:]
 
     return data
 
@@ -31,8 +32,9 @@ def area(image: np.ndarray):
 def circumference(image: np.ndarray, visualise=False):
     '''Takes in a labelled marker image. Returns a list that contains the circumference of each grain.
     '''
+    # A blank image of the same dimension as the mock image. Used for labelling
     blank = np.zeros(
-        image.shape, np.uint8)  # A blank image of the same dimension as the mock image. Used for labelling
+        image.shape, np.uint8)
     labels = np.unique(image)[2:]
 
     # Get a certain label (positive integer that represent one segmented region)
@@ -103,7 +105,7 @@ def width_length_rectangle(image: np.ndarray, label, visualise=False):
         return blank
 
 
-def width_length_size(image: np.ndarray, method = 'ellipse'):
+def width_length_size(image: np.ndarray, method='ellipse'):
     '''Takes in a labelled marker image. Returns a list containing tuples that record the grain label, width, length and average of each grain.
     '''
     unique = np.unique(image)[2:]  # Get all labels
@@ -120,7 +122,8 @@ def width_length_size(image: np.ndarray, method = 'ellipse'):
                 data = width_length_rectangle(image, i)
                 data_l.append((i, data[0], data[1], (data[0]+data[1])/2))
             else:
-                raise ValueError('method string must be either <ellipse> or <rectangle>')
+                raise ValueError(
+                    'method string must be either <ellipse> or <rectangle>')
         except:
             print('Error processing %d' % i)
             pass
@@ -134,17 +137,18 @@ def data_extraction(image: np.ndarray, filename):
     wb = Workbook()
     ws = wb.active
 
-    area, circum, wl = (None, None, None)
+    ar, circum, wl = (None, None, None)
 
+    # Try to generate the.data
     try:
-        area = area(image)
+        ar = area(image)
     except:
-        print('Unable to generate area data.')
+        print('Unable to generate area data')
         pass
     try:
         circum = circumference(image)
     except:
-        print('Unable to generate circum data')
+        print('Unable to generate circumference data')
         pass
     try:
         wl = width_length_size(image)
@@ -156,17 +160,18 @@ def data_extraction(image: np.ndarray, filename):
     print('There are in total %d grains' % len(unique))
 
     # Ensure that area, circumference and siwidth&length data match. If not, discard circumference or width&length data.
-    if len(circum) == len(area):
+    if len(circum) == len(ar):
         pass
     else:
-        print('Area and circumference data do not match! Discarding circumference data.')
+        print('Area and circumference data do not match. Discarding circumference data.')
         circum = None
-    if len(wl) == len(area):
+    if len(wl) == len(ar):
         pass
     else:
-        print('Area and width&length data do not match! Discarding width&length data.')
+        print('Area and width&length data do not match. Discarding width&length data.')
         wl = None
 
+    # Create headers
     ws.cell(row=1, column=1, value='Grain Number')
     ws.cell(row=1, column=2, value='Area')
     ws.cell(row=1, column=3, value='Circumference')
@@ -174,10 +179,11 @@ def data_extraction(image: np.ndarray, filename):
     ws.cell(row=1, column=5, value='Width')
     ws.cell(row=1, column=6, value='Diameter')
 
+    # Load the data
     if area:
         for i in range(len(unique)):
-            ws.cell(row=i+2, column=1, value=area[i][0])
-            ws.cell(row=i+2, column=2, value=area[i][1])
+            ws.cell(row=i+2, column=1, value=ar[i][0])
+            ws.cell(row=i+2, column=2, value=ar[i][1])
     else:
         pass
     if circum:
@@ -193,5 +199,7 @@ def data_extraction(image: np.ndarray, filename):
     else:
         pass
 
+    # Save the data
     wb.save(filename + '.xlsx')
     print('Data saved. Filename: ' + filename + '.xlsx')
+
