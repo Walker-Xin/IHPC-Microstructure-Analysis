@@ -35,6 +35,7 @@ def display_image(img: np.ndarray, figsize: Tuple[int, int] = (18, 18), cmap: Op
 
     if filename:
         plt.savefig(filename)
+        print('Image saved. Filename: ' + filename)
 
     if visualisation:
         plt.show()
@@ -72,6 +73,7 @@ def display_image_1D(*images, figsize: Tuple[int, int] = (18, 18), orientation='
 
     if filename:
         plt.savefig(filename)
+        print('Image saved. Filename: ' + filename)
         
     if visualisation:
         plt.show()
@@ -116,6 +118,7 @@ def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (
 
     if filename:
         plt.savefig(filename)
+        print('Image saved. Filename: ' + filename)
         
     if visualisation:
         plt.show()
