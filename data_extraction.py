@@ -70,8 +70,8 @@ def circumference(image: np.ndarray, visualise=False):
 
     # Merge the data
     label, circumference = np.unique(blank, return_counts=True)
-    circumference = circumference[2:]
-    label = label[2:]
+    circumference = circumference[1:]
+    label = label[1:]
     data = list(zip(label, circumference))
 
     if visualise == False:
