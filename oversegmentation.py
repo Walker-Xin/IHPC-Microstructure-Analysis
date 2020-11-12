@@ -61,7 +61,7 @@ def nearest_label(image, label):
 
 
 def area(image: np.ndarray):
-    '''Takes in a labelled marker image. Returns a list with tuples that contain a label and its area represented by the number of pixels. 
+    '''Takes in a labelled marker image. Returns a dictionary with areas of the grain and their labels. 
     '''
     label, area = np.unique(
         image, return_counts=True)  # Get the numbers of pixels with each label
