@@ -15,7 +15,7 @@ rectangular_masks = [(-30, 50), (65, 45), (89.9, 40)]  # FFT masks
 (thersh, kernel, thresh_pre, dia_iter) = (
     0.21, (5, 5), 65, 2)  # Watershed segmentation
 
-merge_thresh = 800
+merge_thresh = 800  # Merging threshold
 
 # Measure run time
 start = time.time()
