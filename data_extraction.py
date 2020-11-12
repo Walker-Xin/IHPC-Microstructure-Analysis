@@ -40,10 +40,6 @@ def fore_back(image: np.ndarray):
     # Get total area of background
     area_fore = area - area_back
     
-    print(np.count_nonzero(image == 1))
-    print(np.count_nonzero(image != 1))
-    print(image.shape[0] * image.shape[1])
-    
     return {
         'foreground area': area_fore,
         'background area': area_back,
@@ -181,13 +177,14 @@ def data_extraction(image: np.ndarray, filename):
         print('Unable to generate width, length and size data.')
         pass
     unique = np.unique(image)[2:]
-    
-     # Print alpha and beta volume fractions
-    alpha_beta = fore_back(image)
-    print('Alpha volume fraction: {}'.format(alpha_beta['foreground fraction']))
-    print('Beta volume fraction: {}'.format(alpha_beta['background fraction']))
 
-    print('There are in total %d grains' % len(unique))
+    # Print total number of grains
+    print('There are in total %d grains.' % len(unique))
+
+    # Print alpha and beta volume fractions
+    alpha_beta = fore_back(image)
+    print('Alpha volume fraction: {}'.format(round(alpha_beta['foreground fraction'], 2)))
+    print('Beta volume fraction: {}'.format(round(alpha_beta['background fraction'], 2)))
 
     # Ensure that area, circumference and siwidth&length data match. If not, discard circumference or width&length data.
     if len(circum) == len(ar):
