@@ -71,8 +71,9 @@ def fft_filter(img: np.ndarray, mask: np.ndarray) -> Dict[str, np.ndarray]:
 
     fshift = dft_shift * mask
 
-    fshift_mask_mag = 2000 * \
-        np.log(cv2.magnitude(fshift[:, :, 0], fshift[:, :, 1]))
+    with np.errstate(divide='ignore'):
+        fshift_mask_mag = 2000 * \
+            np.log(cv2.magnitude(fshift[:, :, 0], fshift[:, :, 1]))
 
     f_ishift = np.fft.ifftshift(fshift)
     img_back = cv2.idft(f_ishift)
