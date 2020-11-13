@@ -102,6 +102,13 @@ merged = oversegmentation.auto_merge(
 merged = oversegmentation.auto_merge(merged, merge_thresh)
 removed = oversegmentation.remove_boundary(merged)
 
+# Save circumference image
+circum = data_extraction.circumference_visualise(removed)
+image_processing.display_image(
+    circum,
+    cmap='gist_ncar',
+    filename='Data/Pics/'+'circumference_{}_{}.png'.format(image_name, seg_method))
+
 # Save segmentation results
 image_processing.display_image_2D(
     fft_comparison['after FFT inverse'],

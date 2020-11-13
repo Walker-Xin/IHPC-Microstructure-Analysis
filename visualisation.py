@@ -10,8 +10,8 @@ import watershed
 import fast_Fourier_transform
 import image_processing
 
-image_name = 'IHPC'
-seg_method = 'FFT'
+image_name = 'MIPAR'
+seg_method = 'otsu'
 
 # Setting parameters and loading image acoording to image_name
 if image_name == 'IHPC' and seg_method == 'FFT':
@@ -101,6 +101,13 @@ merged = oversegmentation.auto_merge(
     segmented['modified markers'], merge_thresh)
 merged = oversegmentation.auto_merge(merged, merge_thresh)
 removed = oversegmentation.remove_boundary(merged)
+
+# Visualise circumference image
+circum = data_extraction.circumference_visualise(removed)
+image_processing.display_image(
+    circum,
+    cmap='gist_ncar',
+    visualisation=True)
 
 # Visualise segmentation results
 image_processing.display_image_2D(

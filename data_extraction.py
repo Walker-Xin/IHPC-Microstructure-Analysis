@@ -49,10 +49,38 @@ def fore_back(image: np.ndarray):
     }
 
 
-def circumference(image: np.ndarray, visualise=False):
-    '''Takes in a labelled marker image. Returns a list that contains the circumference of each grain.
+def circumference(image: np.ndarray):
+    '''Takes in a labelled marker image. Returns a list containing tuples that record the grain label and the circumference.
     '''
-    # A blank image of the same dimension as the mock image. Used for labelling
+    # A blank image of the same dimension as the input image. Used for labelling
+    blank = np.zeros(
+        image.shape, np.uint8)
+    labels = np.unique(image)[2:]
+    circumference = []
+    
+    # Get a certain label (positive integer that represent one segmented region)
+    for label in labels:
+        result = np.where(image == label) # Exclude other labels
+
+        coordinates = list(zip(result[0], result[1]))
+        for coord in coordinates:
+            blank[coord] = 1 # Mark the pixels on the blank image
+        
+        contours, hierarchy = cv2.findContours(
+            blank, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        cnt = contours[0]
+        length = cv2.arcLength(cnt, True) # Find circumference
+        circumference.append((label, length))
+        blank = np.zeros(
+            image.shape, np.uint8) # Reset blank image
+    
+    return circumference
+
+
+def circumference_visualise(image: np.ndarray):
+    '''Takes in a labelled marker image. Returns an image with only the boundary pixels.
+    '''
+    # A blank image of the same dimension as the input image. Used for labelling
     blank = np.zeros(
         image.shape, np.uint8)
     labels = np.unique(image)[2:]
@@ -67,17 +95,9 @@ def circumference(image: np.ndarray, visualise=False):
             if -1 in neighbours:
                 # If so, put a mark on the blank image
                 blank[coord] = label_no
-
-    # Merge the data
-    label, circumference = np.unique(blank, return_counts=True)
-    circumference = circumference[1:]
-    label = label[1:]
-    data = list(zip(label, circumference))
-
-    if visualise == False:
-        return data
-    else:
-        return blank  # Visualisation of the boundaries
+        
+    # Visualisation of the boundaries
+    return blank
 
 
 def width_length_ellipse(image: np.ndarray, label, visualise=False):
