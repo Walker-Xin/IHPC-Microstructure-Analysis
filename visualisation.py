@@ -63,8 +63,8 @@ thresholded_otsu = image_processing.threshold(denoised, method='Otsu')
 
 # Visualise denoised and thresholded images
 image_processing.display_image_1D(
-    (denoised, 'Denoised Image'),
-    (thresholded_otsu, 'Thresholded Image'),
+    [(denoised, 'Denoised Image'),
+    (thresholded_otsu, 'Thresholded Image')],
     cmap=[None, 'gray'],
     visualisation=True)
 
@@ -79,10 +79,10 @@ fft_comparison = fast_Fourier_transform.fft_filter(thresholded_otsu, masks)
 
 # Visualise FFT comparison image
 image_processing.display_image_2D(
-    (fft_comparison['input image'], 'Input Image'),
+    [(fft_comparison['input image'], 'Input Image'),
     (fft_comparison['after FFT'], 'Frequency Domain'),
     (fft_comparison['FFT + mask'], 'Masked Frequency Domain'),
-    (fft_comparison['after FFT inverse'], 'Output Image'),
+    (fft_comparison['after FFT inverse'], 'Output Image')],
     rows=2, cols=2,
     cmap=['gray', None, None, 'gray'],
     visualisation=True)
@@ -111,10 +111,10 @@ image_processing.display_image(
 
 # Visualise segmentation results
 image_processing.display_image_2D(
-    (fft_comparison['after FFT inverse'], 'FFT Output'),
+    [(fft_comparison['after FFT inverse'], 'FFT Output'),
     (segmented['pre_thresholded'], 'Thresholded FFT Output'),
     (segmented['segmented image'], 'Segmented Original Image'),
-    (removed, 'Marker Image'),
+    (removed, 'Marker Image')],
     rows=2, cols=2,
     cmap=['gray', 'gray', 'gist_ncar', 'gist_ncar'],
     visualisation=True)

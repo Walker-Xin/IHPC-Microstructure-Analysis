@@ -28,6 +28,7 @@ def display_image(data: Tuple[np.ndarray, str], figsize: Tuple[int, int] = (18, 
     If cmap string is provided, the image is displayed with that colourmap.
     If filename is provied, the image is saved with that filename.
     '''
+    (image, name) = data
     fig, ax = plt.subplots(1, 1, figsize=figsize)
     ax.imshow(image, cmap=cmap)
     ax.set_title(name)
@@ -43,8 +44,9 @@ def display_image(data: Tuple[np.ndarray, str], figsize: Tuple[int, int] = (18, 
     plt.close()
 
 
-def display_image_1D(*data_set: Tuple[np.ndarray, str], figsize: Tuple[int, int] = (18, 18), orientation='horizontal', cmap: Optional[list] = None, filename: Optional[str] = None, visualisation = False):
+def display_image_1D(data_set: List, figsize: Tuple[int, int] = (18, 18), orientation='horizontal', cmap: Optional[list] = None, filename: Optional[str] = None, visualisation = False):
     '''Display multiple images in one direction.
+    Input images are stored in a list with tuples containting the images and their titles.
     If cmap list is provided, the images are displayed with their corresponding colourmaps.
     If filename is provided, the images are saved in one single image file.
     '''
@@ -58,19 +60,17 @@ def display_image_1D(*data_set: Tuple[np.ndarray, str], figsize: Tuple[int, int]
     if cmap:
         assert len(data_set) == len(
             cmap), 'Number of colour maps should match number of images'
-        for data in data_set:
-            (image, name) = data
+        for (image, name) in data_set:
             axs[i].imshow(image, cmap=cmap[i])
-            axs.set_title(name)
+            axs[i].set_title(name)
             axs[i].set_xticks([])
             axs[i].set_yticks([])
 
             i += 1
     else:
-        for data in data_set:
-            (image, name) = data
-            axs[i].imshow(image, cmap=cmap[i])
-            axs.set_title(name)
+        for (image, name) in data_set:
+            axs[i].imshow(image)
+            axs[i].set_title(name)
             axs[i].set_xticks([])
             axs[i].set_yticks([])
 
@@ -85,8 +85,9 @@ def display_image_1D(*data_set: Tuple[np.ndarray, str], figsize: Tuple[int, int]
     plt.close()
 
 
-def display_image_2D(*data_set: Tuple[np.ndarray, str], rows: int, cols: int, figsize: Tuple[int, int] = (18, 18), cmap: Optional[list] = None, filename: Optional[str] = None, visualisation = False):
+def display_image_2D(data_set: List, rows: int, cols: int, figsize: Tuple[int, int] = (18, 18), cmap: Optional[list] = None, filename: Optional[str] = None, visualisation = False):
     '''Display multiple images in a matrix. 
+    Input images are stored in a list with tuples containting the images and their titles.
     If cmap list is provided, the images are displayed with their corresponding colourmaps.
     If filename is provided, the images are saved in one single image file.
     '''
@@ -98,8 +99,7 @@ def display_image_2D(*data_set: Tuple[np.ndarray, str], rows: int, cols: int, fi
             cmap), 'Number of colour maps should match number of images'
         assert len(data_set) == rows * \
             cols, 'Product of rows and cols should match numebr of images'
-        for data in data_seta:
-            (image, name) = data
+        for (image, name) in data_set:
             axs[row][col].imshow(image, cmap=cmap[i])
             axs[row][col].set_title(name)
             axs[row][col].set_xticks([])
@@ -113,9 +113,8 @@ def display_image_2D(*data_set: Tuple[np.ndarray, str], rows: int, cols: int, fi
     else:
         assert len(images) == rows * \
             cols, 'Product of rows and cols should match numebr of images'
-        for data in data_seta:
-            (image, name) = data
-            axs[row][col].imshow(image, cmap=cmap[i])
+        for (image, name) in data_set:
+            axs[row][col].imshow(image)
             axs[row][col].set_title(name)
             axs[row][col].set_xticks([])
             axs[row][col].set_yticks([])
