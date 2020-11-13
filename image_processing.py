@@ -23,13 +23,14 @@ def save_images(image_dict: Dict[str, np.ndarray]):
 # Image display
 
 
-def display_image(img: np.ndarray, figsize: Tuple[int, int] = (18, 18), cmap: Optional = None, filename: Optional[str] = None, visualisation = False):
+def display_image(data: Tuple[np.ndarray, str], figsize: Tuple[int, int] = (18, 18), cmap: Optional = None, filename: Optional[str] = None, visualisation = False):
     '''Display an image. 
     If cmap string is provided, the image is displayed with that colourmap.
     If filename is provied, the image is saved with that filename.
     '''
     fig, ax = plt.subplots(1, 1, figsize=figsize)
-    ax.imshow(img, cmap=cmap)
+    ax.imshow(image, cmap=cmap)
+    ax.set_title(name)
     ax.set_xticks([])
     ax.set_yticks([])
 
@@ -42,12 +43,12 @@ def display_image(img: np.ndarray, figsize: Tuple[int, int] = (18, 18), cmap: Op
     plt.close()
 
 
-def display_image_1D(*images, figsize: Tuple[int, int] = (18, 18), orientation='horizontal', cmap: Optional[list] = None, filename: Optional[str] = None, visualisation = False):
+def display_image_1D(*data_set: Tuple[np.ndarray, str], figsize: Tuple[int, int] = (18, 18), orientation='horizontal', cmap: Optional[list] = None, filename: Optional[str] = None, visualisation = False):
     '''Display multiple images in one direction.
     If cmap list is provided, the images are displayed with their corresponding colourmaps.
     If filename is provided, the images are saved in one single image file.
     '''
-    n = len(images)
+    n = len(data_set)
     i = 0
     if orientation == 'horizontal':
         fig, axs = plt.subplots(1, n, figsize=figsize)
@@ -55,17 +56,21 @@ def display_image_1D(*images, figsize: Tuple[int, int] = (18, 18), orientation='
         fig, axs = plt.subplots(n, 1, figsize=figsize)
 
     if cmap:
-        assert len(images) == len(
+        assert len(data_set) == len(
             cmap), 'Number of colour maps should match number of images'
-        for image in images:
+        for data in data_set:
+            (image, name) = data
             axs[i].imshow(image, cmap=cmap[i])
+            axs.set_title(name)
             axs[i].set_xticks([])
             axs[i].set_yticks([])
 
             i += 1
     else:
-        for image in images:
-            axs[i].imshow(image)
+        for data in data_set:
+            (image, name) = data
+            axs[i].imshow(image, cmap=cmap[i])
+            axs.set_title(name)
             axs[i].set_xticks([])
             axs[i].set_yticks([])
 
@@ -80,7 +85,7 @@ def display_image_1D(*images, figsize: Tuple[int, int] = (18, 18), orientation='
     plt.close()
 
 
-def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (18, 18), cmap: Optional[list] = None, filename: Optional[str] = None, visualisation = False):
+def display_image_2D(*data_set: Tuple[np.ndarray, str], rows: int, cols: int, figsize: Tuple[int, int] = (18, 18), cmap: Optional[list] = None, filename: Optional[str] = None, visualisation = False):
     '''Display multiple images in a matrix. 
     If cmap list is provided, the images are displayed with their corresponding colourmaps.
     If filename is provided, the images are saved in one single image file.
@@ -89,12 +94,14 @@ def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (
     row, col, i = 0, 0, 0
 
     if cmap:
-        assert len(images) == len(
+        assert len(data_set) == len(
             cmap), 'Number of colour maps should match number of images'
-        assert len(images) == rows * \
+        assert len(data_set) == rows * \
             cols, 'Product of rows and cols should match numebr of images'
-        for image in images:
+        for data in data_seta:
+            (image, name) = data
             axs[row][col].imshow(image, cmap=cmap[i])
+            axs[row][col].set_title(name)
             axs[row][col].set_xticks([])
             axs[row][col].set_yticks([])
 
@@ -106,8 +113,10 @@ def display_image_2D(*images, rows: int, cols: int, figsize: Tuple[int, int] = (
     else:
         assert len(images) == rows * \
             cols, 'Product of rows and cols should match numebr of images'
-        for image in images:
-            axs[row][col].imshow(image)
+        for data in data_seta:
+            (image, name) = data
+            axs[row][col].imshow(image, cmap=cmap[i])
+            axs[row][col].set_title(name)
             axs[row][col].set_xticks([])
             axs[row][col].set_yticks([])
 
