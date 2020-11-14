@@ -11,7 +11,7 @@ import fast_Fourier_transform
 import image_processing
 
 image_name = 'MIPAR'
-seg_method = 'FFT'
+seg_method = 'otsu'
 
 # Setting parameters and loading image acoording to image_name
 if image_name == 'IHPC' and seg_method == 'FFT':
@@ -66,7 +66,7 @@ image_processing.display_image_1D(
     [(denoised, 'Denoised Image'),
     (thresholded_otsu, 'Thresholded Image')],
     cmap=[None, 'gray'],
-    filename='Data/Pics/'+'denoised_n_thresholded_{}.png'.format(image_name))
+    filename='Data/Pics/denoised_n_thresholded_{}.png'.format(image_name))
 
 # FFT images
 fft = fast_Fourier_transform.fft_rectangular(
@@ -85,7 +85,7 @@ image_processing.display_image_2D(
     (fft_comparison['after FFT inverse'], 'Output Image')],
     rows=2, cols=2,
     cmap=['gray', None, None, 'gray'],
-    filename='Data/Pics/'+'FFT_{}.png'.format(image_name))
+    filename='Data/Pics/FFT_{}.png'.format(image_name))
 
 # Segmentation
 if seg_method == 'FFT':
@@ -107,7 +107,7 @@ circum = data_extraction.circumference_visualise(removed)
 image_processing.display_image(
     (circum, 'Circumference Illustration'),
     cmap='gist_ncar',
-    filename='Data/Pics/'+'circumference_{}_{}.png'.format(image_name, seg_method))
+    filename='Data/Pics/circumference_{}_{}.png'.format(image_name, seg_method))
 
 # Save segmentation results
 image_processing.display_image_2D(
@@ -117,7 +117,28 @@ image_processing.display_image_2D(
     (removed, 'Marker Image')],
     rows=2, cols=2,
     cmap=['gray', 'gray', 'gist_ncar', 'gist_ncar'],
-    filename='Data/Pics/'+'segmentation_{}_{}.png'.format(image_name, seg_method))
+    filename='Data/Pics/segmentation_{}_{}.png'.format(image_name, seg_method))
+
+
+# Save individual images
+images_cmaps = [
+    (denoised, 'Denoised', None),
+    (thresholded_otsu, 'Thresholded', 'gray'),
+    (fft_comparison['after FFT'], 'Frequency Domain', None),
+    (fft_comparison['FFT + mask'], 'Masked Frequency Domain', None),
+    (fft_comparison['after FFT inverse'], 'FFT Output Image', 'gray'),
+    (circum, 'Circumference', 'gist_ncar'),
+    (removed, 'Marker Image', 'gist_ncar'),
+    (segmented['segmented image'], 'Segmented Image', 'gist_ncar')]
+
+for data in images_cmaps:
+    image_processing.display_image(
+        (data[0], data[1]),
+        cmap=data[2],
+        figsize=(12, 9),
+        filename='Data/Pics/Individual/{}/{}/{}_{}_{}.png'.format(image_name, seg_method, data[1], image_name, seg_method)
+    )
+
 
 end = time.time()
 
