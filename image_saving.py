@@ -10,8 +10,8 @@ import watershed
 import fast_Fourier_transform
 import image_processing
 
-image_name = 'MIPAR'
-seg_method = 'otsu'
+image_name = 'IHPC'
+seg_method = 'FFT'
 
 # Setting parameters and loading image acoording to image_name
 if image_name == 'IHPC' and seg_method == 'FFT':
@@ -119,17 +119,16 @@ image_processing.display_image_2D(
     cmap=['gray', 'gray', 'gist_ncar', 'gist_ncar'],
     filename='Data/Pics/segmentation_{}_{}.png'.format(image_name, seg_method))
 
-
 # Save individual images
 images_cmaps = [
-    (denoised, 'Denoised', None),
-    (thresholded_otsu, 'Thresholded', 'gray'),
-    (fft_comparison['after FFT'], 'Frequency Domain', None),
-    (fft_comparison['FFT + mask'], 'Masked Frequency Domain', None),
-    (fft_comparison['after FFT inverse'], 'FFT Output Image', 'gray'),
-    (circum, 'Circumference', 'gist_ncar'),
-    (removed, 'Marker Image', 'gist_ncar'),
-    (segmented['segmented image'], 'Segmented Image', 'gist_ncar')]
+    (denoised, 'denoised', None),
+    (thresholded_otsu, 'thresholded', 'gray'),
+    (fft_comparison['after FFT'], 'frequency_domain', None),
+    (fft_comparison['FFT + mask'], 'masked_frequency_domain', None),
+    (fft_comparison['after FFT inverse'], 'FFT_output_image', 'gray'),
+    (circum, 'circumference', 'gist_ncar'),
+    (removed, 'marker_image', 'gist_ncar'),
+    (segmented['segmented image'], 'segmented_image', 'gist_ncar')]
 
 for data in images_cmaps:
     image_processing.display_image(
@@ -138,7 +137,6 @@ for data in images_cmaps:
         figsize=(12, 9),
         filename='Data/Pics/Individual/{}/{}/{}_{}_{}.png'.format(image_name, seg_method, data[1], image_name, seg_method)
     )
-
 
 end = time.time()
 
