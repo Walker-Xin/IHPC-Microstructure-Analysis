@@ -26,7 +26,6 @@ print('Segmenting {} image based on {} method...'.format(image_name, seg_method)
 if image_name == 'IHPC':
     image = cv2.imread(
         'Data/' + image_name + '.png')
-    image_ori = image
     
     rectangular_masks = [(-52, 60), (75, 45), (89.9, 30),
                             (60, 25)]  # FFT masks
@@ -38,7 +37,7 @@ if image_name == 'IHPC':
         merge_thresh = 6500  # Merging threshold
     elif seg_method == 'otsu':
         (thersh, kernel, thresh_pre, dia_iter) = (
-            0.19, (3, 3), 30, 3)  # Watershed segmentation
+            0.20, (3, 3), 30, 3)  # Watershed segmentation
 
         merge_thresh = 6000  # Merging threshold
     else:
@@ -46,7 +45,6 @@ if image_name == 'IHPC':
 elif image_name == 'MIPAR':
     image = cv2.imread(
         'Data/' + image_name + '.png')
-    image_ori = image
 
     rectangular_masks = [(-30, 50), (65, 45), (89.9, 40)]  # FFT masks
 
