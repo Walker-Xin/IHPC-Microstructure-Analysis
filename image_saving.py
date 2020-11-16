@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-import os
+import sys
 import time
 
 import data_extraction
@@ -10,10 +10,19 @@ import watershed
 import fast_Fourier_transform
 import image_processing
 
-image_name = 'IHPC'
-seg_method = 'FFT'
+# Set image files and segmentation method
+if len(sys.argv) > 1:
+    image_name = sys.argv[1]
+    assert isinstance(image_name, str), 'Incorrect first variable type passed!'
+    seg_method = sys.argv[2]
+    assert isinstance(seg_method, str), 'Incorrect second variable type passed!'
+else:
+    image_name = 'MIPAR'
+    seg_method = 'otsu'
 
-# Setting parameters and loading image acoording to image_name
+print('Segmenting {} image based on {} method...'.format(image_name, seg_method))
+
+# Set parameters and load image acoording to image_name
 if image_name == 'IHPC' and seg_method == 'FFT':
     rectangular_masks = [(-52, 60), (75, 45), (89.9, 30),
                          (60, 25)]  # FFT masks
