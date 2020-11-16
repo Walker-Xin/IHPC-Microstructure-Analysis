@@ -52,7 +52,11 @@ FFT masks: rectangular_masks = [(-52, 60), (75, 45), (89.9, 30), (60, 25)]
 
 Watershed segmentation (FFT): (thersh, kernel, thresh_pre, dia_iter) = (0.24, (3, 3), 25, 3)
 
+Watershed segmentation (Otsu): (thersh, kernel, thresh_pre, dia_iter) = (0.20, (3, 3), 30, 3)
+
 Merge threshold (FFT): merge_thresh = 6500
+
+Merge threshold (FFT): merge_thresh = 6000
 
 ### MIPAR
 
