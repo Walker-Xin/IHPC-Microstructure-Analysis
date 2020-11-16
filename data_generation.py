@@ -23,43 +23,48 @@ else:
 print('Segmenting {} image based on {} method...'.format(image_name, seg_method))
 
 # Set parameters and load image acoording to image_name
-if image_name == 'IHPC' and seg_method == 'FFT':
+if image_name == 'IHPC':
+    image = cv2.imread(
+        'Data/' + image_name + '.png')
+    image_ori = image
+    
     rectangular_masks = [(-52, 60), (75, 45), (89.9, 30),
-                         (60, 25)]  # FFT masks
+                            (60, 25)]  # FFT masks
 
-    (thersh, kernel, thresh_pre, dia_iter) = (
-        0.24, (3, 3), 25, 3)  # Watershed segmentation
+    if seg_method == 'FFT':
+        (thersh, kernel, thresh_pre, dia_iter) = (
+            0.24, (3, 3), 25, 3)  # Watershed segmentation
 
-    merge_thresh = 6500  # Merging threshold
+        merge_thresh = 6500  # Merging threshold
+    elif seg_method == 'otsu':
+        (thersh, kernel, thresh_pre, dia_iter) = (
+            0.19, (3, 3), 30, 3)  # Watershed segmentation
 
+        merge_thresh = 6000  # Merging threshold
+    else:
+        raise ValueError('Incorret seg_method!')
+elif image_name == 'MIPAR':
     image = cv2.imread(
         'Data/' + image_name + '.png')
     image_ori = image
-elif image_name == 'MIPAR' and seg_method == 'FFT':
+
     rectangular_masks = [(-30, 50), (65, 45), (89.9, 40)]  # FFT masks
 
-    (thersh, kernel, thresh_pre, dia_iter) = (
-        0.21, (5, 5), 65, 2)  # Watershed segmentation
+    if seg_method == 'FFT':
+        (thersh, kernel, thresh_pre, dia_iter) = (
+            0.21, (5, 5), 65, 2)  # Watershed segmentation
 
-    merge_thresh = 800  # Merging threshold
+        merge_thresh = 800  # Merging threshold
 
-    image = cv2.imread(
-        'Data/' + image_name + '.png')
-    image_ori = image
-elif image_name == 'MIPAR' and seg_method == 'otsu':
-    rectangular_masks = [(-30, 50), (65, 45), (89.9, 40)]  # FFT masks
+    elif seg_method == 'otsu':
+        (thersh, kernel, thresh_pre, dia_iter) = (
+            0.22, (5, 5), 30, 2)  # Watershed segmentation
 
-    (thersh, kernel, thresh_pre, dia_iter) = (
-        0.22, (5, 5), 30, 2)  # Watershed segmentation
-
-    merge_thresh = 1000  # Merging threshold
-
-    image = cv2.imread(
-        'Data/' + image_name + '.png')
-    image_ori = image
+        merge_thresh = 1000  # Merging threshold
+    else:
+        raise ValueError('Incorret seg_method!')
 else:
-    raise ValueError('Incorret image or method name!')
-
+    raise ValueError('Incorret image name!')
 # Measure run time
 start = time.time()
 
