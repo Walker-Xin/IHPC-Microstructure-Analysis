@@ -17,9 +17,14 @@ if len(sys.argv) > 1:
     assert isinstance(image_name, str), 'Incorrect first variable type passed!'
     seg_method = sys.argv[2]
     assert isinstance(seg_method, str), 'Incorrect second variable type passed!'
+    try:
+        seg_cmap = sys.argv[3]
+    except:
+        seg_cmap = None
 else:
     image_name = 'MIPAR'
     seg_method = 'otsu'
+    seg_cmap = None
 
 print('Segmenting {} image based on {} method...'.format(image_name, seg_method))
 
@@ -124,7 +129,7 @@ removed = oversegmentation.remove_boundary(merged)
 circum = data_extraction.circumference_visualise(removed)
 image_processing.display_image(
     (circum, 'Circumference Illustration'),
-    cmap='gist_ncar',
+    cmap=seg_cmap,
     filename='Data/Pics/circumference_{}_{}.png'.format(image_name, seg_method))
 
 # Save segmentation results
@@ -134,7 +139,7 @@ image_processing.display_image_2D(
     (unmerged, 'Original Marker Image'),
     (removed, 'Merged Marker Image')],
     rows=2, cols=2,
-    cmap=[None, None, 'gist_ncar', 'gist_ncar'],
+    cmap=[None, None, seg_cmap, seg_cmap],
     filename='Data/Pics/segmentation_{}_{}.png'.format(image_name, seg_method))
 
 # Save individual images
@@ -144,9 +149,9 @@ images_cmaps = [
     (fft_comparison['after FFT'], 'frequency_domain', None),
     (fft_comparison['FFT + mask'], 'masked_frequency_domain', None),
     (fft_comparison['after FFT inverse'], 'FFT_output_image', 'gray'),
-    (circum, 'circumference', 'gist_ncar'),
-    (removed, 'marker_image', 'gist_ncar'),
-    (segmented['segmented image'], 'segmented_image', 'gist_ncar')]
+    (circum, 'circumference', seg_cmap),
+    (removed, 'marker_image', seg_cmap),
+    (segmented['segmented image'], 'segmented_image', seg_cmap)]
 
 for data in images_cmaps:
     image_processing.display_image(
