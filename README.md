@@ -58,6 +58,18 @@ Merge threshold (FFT): merge_thresh = 6500
 
 Merge threshold (FFT): merge_thresh = 6000
 
+### IHPC cropped
+
+FFT masks: rectangular_masks = [(70, 30), (-35, 30)]
+
+Watershed segmentation (FFT): (thersh, kernel, thresh_pre, dia_iter) = (0.24, (3, 3), 25, 3)
+
+Watershed segmentation (Otsu): (thersh, kernel, thresh_pre, dia_iter) = (0.20, (3, 3), 30, 3)
+
+Merge threshold (FFT): merge_thresh = 4000
+
+Merge threshold (FFT): merge_thresh = 4000
+
 ### MIPAR
 
 FFT masks: rectangular_masks = [(-30, 50), (65, 45), (89.9, 40)]
@@ -69,6 +81,18 @@ Watershed segmentation (Otsu): (thersh, kernel, thresh_pre, dia_iter) = (0.22, (
 Merge threshold (FFT): merge_thresh = 800
 
 Merge threshold (Otsu): merge_thresh = 1000
+
+### MIPAR cropped
+
+FFT masks: rectangular_masks = [(89.9, 30)]
+
+Watershed segmentation (FFT): (thersh, kernel, thresh_pre, dia_iter) = (0.24, (3, 3), 25, 3)
+
+Watershed segmentation (Otsu): (thersh, kernel, thresh_pre, dia_iter) = (0.20, (3, 3), 30, 3)
+
+Merge threshold (FFT): merge_thresh = 400
+
+Merge threshold (FFT): merge_thresh = 800
 
 ## Acknowledgment
 
