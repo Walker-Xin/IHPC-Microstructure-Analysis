@@ -23,7 +23,7 @@ def save_images(image_dict: Dict[str, np.ndarray]):
 # Image display
 
 
-def display_image(data: Tuple[np.ndarray, str], figsize: Tuple[int, int] = (18, 18), cmap: Optional = None, filename: Optional[str] = None, visualisation = False):
+def display_image(data: Tuple[np.ndarray, str], figsize: Tuple[int, int] = (18, 18), cmap: Optional = None, filename: Optional[str] = None, visualisation = False, tight = False):
     '''Display an image. 
     If cmap string is provided, the image is displayed with that colourmap.
     If filename is provied, the image is saved with that filename.
@@ -31,12 +31,16 @@ def display_image(data: Tuple[np.ndarray, str], figsize: Tuple[int, int] = (18, 
     (image, name) = data
     fig, ax = plt.subplots(1, 1, figsize=figsize)
     ax.imshow(image, cmap=cmap)
-    ax.set_title(name)
+    if name:
+        ax.set_title(name)
     ax.set_xticks([])
     ax.set_yticks([])
 
     if filename:
-        plt.savefig(filename)
+        if tight:
+            plt.savefig(filename, bbox_inches = 'tight')
+        else:
+            plt.savefig(filename)
         print('Image saved. Filename: ' + filename)
 
     if visualisation:

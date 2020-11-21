@@ -24,7 +24,7 @@ if len(sys.argv) > 1:
 else:
     image_name = 'IHPC'
     seg_method = 'otsu'
-    seg_cmap = None
+    seg_cmap = 'gist_ncar'
 
 print('Segmenting {} image based on {} method...'.format(image_name, seg_method))
 
@@ -160,9 +160,9 @@ images_cmaps = [
 
 for data in images_cmaps:
     image_processing.display_image(
-        (data[0], data[1]),
+        (data[0], None),
         cmap=data[2],
-        figsize=(12, 9),
+        tight=True,
         filename='Data/Pics/Individual/{}/{}/{}_{}_{}.png'.format(image_name, seg_method, data[1], image_name, seg_method)
     )
 
