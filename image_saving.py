@@ -23,8 +23,8 @@ if len(sys.argv) > 1:
         seg_cmap = None
 else:
     image_name = 'IHPC'
-    seg_method = 'otsu'
-    seg_cmap = 'gist_ncar'
+    seg_method = 'FFT'
+    seg_cmap = None
 
 print('Segmenting {} image based on {} method...'.format(image_name, seg_method))
 
@@ -156,6 +156,7 @@ images_cmaps = [
     (fft_comparison['after FFT inverse'], 'FFT_output_image', 'gray'),
     (circum, 'circumference', seg_cmap),
     (removed, 'marker_image', seg_cmap),
+    (unmerged, 'original_marker_image', seg_cmap),
     (segmented['segmented image'], 'segmented_image', seg_cmap)]
 
 for data in images_cmaps:
