@@ -217,3 +217,20 @@ def threshold_multi(image_dict: Dict[str, np.ndarray], method: str):
         new_img_dict[new_label] = threshold_image(
             image_dict[label], method=method)
     return new_img_dict
+
+
+def histogram(image: np.ndarray, figsize: Tuple[int, int] = (18, 18), filename: Optional[str] = None, visualisation = False):
+    '''Calculates and visualises the intensity histogram of an image.
+    '''
+    hist = cv2.calcHist([image], [0], None, [256], [0, 256])
+    fig, ax = plt.subplots(1, 1)
+    ax.plot(hist)
+    ax.set_title('Intensity Histogram')
+    
+    if filename:
+        plt.savefig(filename)
+        print('Image saved. Filename: ' + filename)
+        
+    if visualisation:
+        plt.show()
+    plt.close()
