@@ -229,10 +229,9 @@ def histogram(image: np.ndarray, figsize: Tuple[int, int] = (18, 18), filename: 
     hist = cv2.calcHist([image], [0], None, [256], [0, 256])
     fig, ax = plt.subplots(1, 1)
     ax.plot(hist)
-    ax.set_title('Intensity Histogram')
     
     if filename:
-        plt.savefig(filename)
+        plt.savefig(filename, bbox_inches = 'tight')
         print('Image saved. Filename: ' + filename)
         
     if visualisation:

@@ -77,11 +77,6 @@ else:
 # Measure run time
 start = time.time()
 
-# Visualise intensity histogram
-image_processing.histogram(
-    image,
-    visualisation=True)
-
 # Denoisng
 denoised = image_processing.denoise(
     image, method='gaussian', ksize=(5, 5), sigmaX=5)
