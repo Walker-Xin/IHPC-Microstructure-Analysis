@@ -35,8 +35,7 @@ if image_name == 'IHPC':
     image_ori = cv2.imread(
         'Data/' + image_name + '.png')
     
-    rectangular_masks = [(-52, 60), (75, 45), (89.9, 30),
-                            (60, 25)]  # FFT masks
+    rectangular_masks = [(-52, 60), (75, 45), (89.9, 30),(60, 25)]  # FFT masks
 
     if seg_method == 'FFT':
         (thersh, kernel, thresh_pre, dia_iter) = (
@@ -48,6 +47,26 @@ if image_name == 'IHPC':
             0.20, (3, 3), 30, 3)  # Watershed segmentation
 
         merge_thresh = 6000  # Merging threshold
+    else:
+        raise ValueError('Incorret seg_method!')
+elif image_name == 'IHPC_cropped':
+    image = cv2.imread(
+        'Data/' + image_name + '.png')
+    image_ori = cv2.imread(
+        'Data/' + image_name + '.png')
+    
+    rectangular_masks = [(70, 30), (-35, 30)]  # FFT masks
+
+    if seg_method == 'FFT':
+        (thersh, kernel, thresh_pre, dia_iter) = (
+            0.24, (3, 3), 25, 3)  # Watershed segmentation
+
+        merge_thresh = 4000  # Merging threshold
+    elif seg_method == 'otsu':
+        (thersh, kernel, thresh_pre, dia_iter) = (
+            0.20, (3, 3), 30, 3)  # Watershed segmentation
+
+        merge_thresh = 4000  # Merging threshold
     else:
         raise ValueError('Incorret seg_method!')
 elif image_name == 'MIPAR':
@@ -69,6 +88,27 @@ elif image_name == 'MIPAR':
             0.22, (5, 5), 30, 2)  # Watershed segmentation
 
         merge_thresh = 1000  # Merging threshold
+    else:
+        raise ValueError('Incorret seg_method!')
+elif image_name == 'MIPAR_cropped':
+    image = cv2.imread(
+        'Data/' + image_name + '.png')
+    image_ori = cv2.imread(
+        'Data/' + image_name + '.png')
+
+    rectangular_masks = [(89.9, 30)]  # FFT masks
+
+    if seg_method == 'FFT':
+        (thersh, kernel, thresh_pre, dia_iter) = (
+            0.21, (5, 5), 65, 2)  # Watershed segmentation
+
+        merge_thresh = 400  # Merging threshold
+
+    elif seg_method == 'otsu':
+        (thersh, kernel, thresh_pre, dia_iter) = (
+            0.22, (5, 5), 30, 2)  # Watershed segmentation
+
+        merge_thresh = 800  # Merging threshold
     else:
         raise ValueError('Incorret seg_method!')
 else:
