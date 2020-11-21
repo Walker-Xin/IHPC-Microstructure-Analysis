@@ -17,9 +17,14 @@ if len(sys.argv) > 1:
     assert isinstance(image_name, str), 'Incorrect first variable type passed!'
     seg_method = sys.argv[2]
     assert isinstance(seg_method, str), 'Incorrect second variable type passed!'
+    try:
+        seg_cmap = sys.argv[3]
+    except:
+        seg_cmap = None
 else:
     image_name = 'IHPC'
     seg_method = 'otsu'
+    seg_cmap = None
 
 print('Segmenting {} image based on {} method...'.format(image_name, seg_method))
 
@@ -124,7 +129,7 @@ removed = oversegmentation.remove_boundary(merged)
 circum = data_extraction.circumference_visualise(removed)
 image_processing.display_image(
     (circum, 'Circumferecne Illustration'),
-    cmap='gist_ncar',
+    cmap=seg_cmap,
     visualisation=True)
 
 # Visualise segmentation results
@@ -134,7 +139,7 @@ image_processing.display_image_2D(
     (unmerged, 'Original Marker Image'),
     (removed, 'Merged Marker Image')],
     rows=2, cols=2,
-    cmap=[None, None, 'gist_ncar', 'gist_ncar'],
+    cmap=[None, None, seg_cmap, seg_cmap],
     visualisation=True)
 
 end = time.time()

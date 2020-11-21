@@ -16,6 +16,10 @@ if len(sys.argv) > 1:
     assert isinstance(image_name, str), 'Incorrect first variable type passed!'
     seg_method = sys.argv[2]
     assert isinstance(seg_method, str), 'Incorrect second variable type passed!'
+    try:
+        seg_cmap = sys.argv[3]
+    except:
+        seg_cmap = None
 else:
     image_name = 'MIPAR'
     seg_method = 'otsu'
