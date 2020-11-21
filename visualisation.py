@@ -22,7 +22,7 @@ if len(sys.argv) > 1:
     except:
         seg_cmap = None
 else:
-    image_name = 'IHPC'
+    image_name = 'MIPAR'
     seg_method = 'otsu'
     seg_cmap = None
 
@@ -76,6 +76,11 @@ else:
 
 # Measure run time
 start = time.time()
+
+# Visualise intensity histogram
+image_processing.histogram(
+    image,
+    visualisation=True)
 
 # Denoisng
 denoised = image_processing.denoise(
