@@ -15,22 +15,22 @@ MIPAR_cmap = 'gist_ncar'
 
 for name in names_IHPC:
     for method in methods:
-        if image = 'Y':
+        if image == 'Y':
             os.system('python image_saving.py {} {}'.format(name, method))
         else:
             pass
-        if data = 'Y':
+        if data == 'Y':
             os.system('python data_generation.py {} {}'.format(name, method))
         else:
             pass
 
 for name in names_MIPAR:
     for method in methods:
-        if image = 'Y':
+        if image == 'Y':
             os.system('python image_saving.py {} {} {}'.format(name, method, MIPAR_cmap))
         else:
             pass
-        if data = 'Y':
+        if data == 'Y':
             os.system('python data_generation.py {} {} {}'.format(name, method, MIPAR_cmap))
         else:
             pass
