@@ -23,7 +23,7 @@ if len(sys.argv) > 1:
         seg_cmap = None
 else:
     image_name = 'IHPC'
-    seg_method = 'FFT'
+    seg_method = 'otsu'
     seg_cmap = None
 
 print('Segmenting {} image based on {} method...'.format(image_name, seg_method))
@@ -171,7 +171,7 @@ circum = data_extraction.circumference_visualise(merged['merged markers'])
 image_processing.display_image(
     (circum, 'Circumferecne Illustration'),
     cmap=seg_cmap,
-    visualisation=True)
+    filename='Data/Pics/circumference_{}_{}.png'.format(image_name, seg_method))
 
 # Save segmentation results
 image_processing.display_image_2D(
