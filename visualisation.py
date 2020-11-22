@@ -159,14 +159,10 @@ else:
         thresholded_otsu, image, thresh=thersh, kernel=kernel, thresh_pre=thresh_pre, dia_iter=dia_iter)
 
 # Reducing oversegmentation
-unmerged = copy.deepcopy(segmented['modified markers'])
-merged = oversegmentation.auto_merge(
-    segmented['modified markers'], merge_thresh)
-merged = oversegmentation.auto_merge(merged, merge_thresh)
-removed = oversegmentation.remove_boundary(merged)
+merged = oversegmentation.oversegmentation(segmented['modified markers'], image_ori, merge_thresh)
 
 # Visualise circumference image
-circum = data_extraction.circumference_visualise(removed)
+circum = data_extraction.circumference_visualise(merged['merged markers'])
 image_processing.display_image(
     (circum, 'Circumferecne Illustration'),
     cmap=seg_cmap,
@@ -175,9 +171,9 @@ image_processing.display_image(
 # Visualise segmentation results
 image_processing.display_image_2D(
     [(image_ori, 'Original Image'),
-    (segmented['segmented image'], 'Segmented Original Image'),
-    (unmerged, 'Original Marker Image'),
-    (removed, 'Merged Marker Image')],
+    (merged['merged segmented image'], 'Segmented Image'),
+    (segmented['modified markers'], 'Marker Image before Merging'),
+    (merged['merged markers'], 'Merged Marker Image')],
     rows=2, cols=2,
     cmap=[None, None, seg_cmap, seg_cmap],
     visualisation=True)

@@ -2,12 +2,14 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import copy
 
 from typing import Dict, List, Optional, Tuple
 
 
 def surround_1(image: np.ndarray, coord: Tuple[int, int]):
-    '''Takes in an array and a pixel's coordinate. Returns an array that contains the pixel itself and its 8 surrounding pixels, in total 9.
+    '''Take in an array and a pixel's coordinate. 
+    Return an array that contains the pixel itself and its 8 surrounding pixels, in total 9.
     '''
     lis = coord[0]
     ele = coord[1]
@@ -16,7 +18,8 @@ def surround_1(image: np.ndarray, coord: Tuple[int, int]):
 
 
 def surround_2(image: np.ndarray, coord: Tuple[int, int]):
-    '''Takes in an array and a pixel's coordinate. Returns an array that contains the pixel itself and its 24 surrounding pixels of two layers, in total 25.
+    '''Take in an array and a pixel's coordinate. 
+    Return an array that contains the pixel itself and its 24 surrounding pixels of two layers, in total 25.
     '''
     lis = coord[0]
     ele = coord[1]
@@ -25,7 +28,8 @@ def surround_2(image: np.ndarray, coord: Tuple[int, int]):
 
 
 def merge(image: np.ndarray, label_small, label_large):
-    '''Takes in an labelled marker image. Merge the region marked by label_small with the region marked by lebel_large. Returns the image after merging.
+    '''Take in an labelled marker image. Merge the region marked by label_small with the region marked by lebel_large. 
+    Return the image after merging.
     '''
     # Get coordinates of pixels of label_small
     coordinates = np.where(image == label_small)
@@ -39,7 +43,7 @@ def merge(image: np.ndarray, label_small, label_large):
 
 
 def nearest_label(image, label):
-    '''Takes in a labelled marker image and a label. Retrieves the unique labels in the surrounding regions of an area.
+    '''Take in a labelled marker image and a label. Retrieve the unique labels in the surrounding regions of an area.
     '''
     coordinates = np.where(image == label)
     coordinates = list(zip(coordinates[0], coordinates[1]))
@@ -61,7 +65,7 @@ def nearest_label(image, label):
 
 
 def area(image: np.ndarray):
-    '''Takes in a labelled marker image. Returns a dictionary with areas of the grain and their labels. 
+    '''Take in a labelled marker image. Return a dictionary with areas of the grain and their labels. 
     '''
     label, area = np.unique(
         image, return_counts=True)  # Get the numbers of pixels with each label
@@ -73,8 +77,9 @@ def area(image: np.ndarray):
     return data
 
 
-def auto_merge(image, threshold):
-    '''Takes in a labelled marker image and a threshold. Conducts automatic merging of small regions with large regions. Selection is based on threshold. Returns the merged image. A second round of merging may be required for optimal results.
+def auto_merge(image: np.ndarray, threshold):
+    '''Take in a labelled marker image and a threshold. Conduct automatic merging of small regions with large regions. 
+    Selection is based on threshold. Return the merged image. A second round of merging may be required for optimal results.
     '''
     areas = area(image)  # Get area data
     labels = np.unique(image)[2:]  # Get all labels
@@ -101,8 +106,9 @@ def auto_merge(image, threshold):
     return image
 
 
-def remove_boundary(image):
-    '''Takes in a labelled marker image. Removes excess boundary lines due to auto merging. Returns the image with excess boundary lines removed.
+def remove_boundary(image: np.ndarray):
+    '''Take in a labelled marker image. Remove excess boundary lines due to auto merging. 
+    Return the image with excess boundary lines removed.
     '''
     removed = image
 
@@ -120,3 +126,21 @@ def remove_boundary(image):
             pass
 
     return removed
+
+def oversegmentation(image: np.ndarray, image_ori: np.ndarray, threshold):
+    '''Take in a labelled marker image. Reduce oversegmentation by region merging based on area.
+    Return the merged marker image and the segmented original image.
+    '''
+    image = copy.deepcopy(image)
+    image_ori = copy.deepcopy(image_ori)
+
+    merged = auto_merge(image, threshold)
+    merged = auto_merge(merged, threshold)
+    removed = remove_boundary(merged)
+
+    image_ori[removed == -1] = [255, 0, 0]
+
+    return {
+        'merged markers': merged,
+        'merged segmented image': image_ori
+    }
