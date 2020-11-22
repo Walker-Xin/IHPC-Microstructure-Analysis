@@ -193,7 +193,8 @@ images_cmaps = [
     (circum, 'circumference', seg_cmap),
     (merged['merged markers'], 'marker_image', seg_cmap),
     (segmented['modified markers'], 'original_marker_image', seg_cmap),
-    (segmented['segmented image'], 'segmented_image', seg_cmap)]
+    (segmented['segmented image'], 'segmented_image', seg_cmap),
+    (merged['merged segmented image'], 'merged_segmented_image', seg_cmap)]
 
 for data in images_cmaps:
     image_processing.display_image(
