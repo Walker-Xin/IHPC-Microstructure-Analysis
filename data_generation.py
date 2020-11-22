@@ -135,14 +135,11 @@ else:
         thresholded_otsu, image, thresh=thersh, kernel=kernel, thresh_pre=thresh_pre, dia_iter=dia_iter)
 
 # Reducing oversegmentation
-merged = oversegmentation.auto_merge(
-    segmented['modified markers'], merge_thresh)
-merged = oversegmentation.auto_merge(merged, merge_thresh)
-removed = oversegmentation.remove_boundary(merged)
+merged = oversegmentation.oversegmentation(segmented['modified markers'], image_ori, merge_thresh)
 
 # Data extraction and saving data
 data_extraction.data_extraction(
-    removed, 'Data/data_{}_{}'.format(image_name, seg_method))
+    merged['merged markers'], 'Data/data_{}_{}'.format(image_name, seg_method))
 
 end = time.time()
 

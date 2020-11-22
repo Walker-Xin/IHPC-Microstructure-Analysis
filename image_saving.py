@@ -164,25 +164,21 @@ else:
         thresholded_otsu, image, thresh=thersh, kernel=kernel, thresh_pre=thresh_pre, dia_iter=dia_iter)
 
 # Reducing oversegmentation
-unmerged = copy.deepcopy(segmented['modified markers'])
-merged = oversegmentation.auto_merge(
-    segmented['modified markers'], merge_thresh)
-merged = oversegmentation.auto_merge(merged, merge_thresh)
-removed = oversegmentation.remove_boundary(merged)
+merged = oversegmentation.oversegmentation(segmented['modified markers'], image_ori, merge_thresh)
 
 # Save circumference image
-circum = data_extraction.circumference_visualise(removed)
+circum = data_extraction.circumference_visualise(merged['merged markers'])
 image_processing.display_image(
-    (circum, 'Circumference Illustration'),
+    (circum, 'Circumferecne Illustration'),
     cmap=seg_cmap,
-    filename='Data/Pics/circumference_{}_{}.png'.format(image_name, seg_method))
+    visualisation=True)
 
 # Save segmentation results
 image_processing.display_image_2D(
     [(image_ori, 'Original Image'),
-    (segmented['segmented image'], 'Segmented Original Image'),
-    (unmerged, 'Original Marker Image'),
-    (removed, 'Merged Marker Image')],
+    (merged['merged segmented image'], 'Segmented Image'),
+    (segmented['modified markers'], 'Marker Image before Merging'),
+    (merged['merged markers'], 'Merged Marker Image')],
     rows=2, cols=2,
     cmap=[None, None, seg_cmap, seg_cmap],
     filename='Data/Pics/segmentation_{}_{}.png'.format(image_name, seg_method))
@@ -195,8 +191,8 @@ images_cmaps = [
     (fft_comparison['FFT + mask'], 'masked_frequency_domain', None),
     (fft_comparison['after FFT inverse'], 'FFT_output_image', 'gray'),
     (circum, 'circumference', seg_cmap),
-    (removed, 'marker_image', seg_cmap),
-    (unmerged, 'original_marker_image', seg_cmap),
+    (merged['merged markers'], 'marker_image', seg_cmap),
+    (segmented['modified markers'], 'original_marker_image', seg_cmap),
     (segmented['segmented image'], 'segmented_image', seg_cmap)]
 
 for data in images_cmaps:
