@@ -140,39 +140,39 @@ def display_image_2D(data_set: List, rows: int, cols: int, figsize: Tuple[int, i
 # Algorithms
 
 
-def denoise(img: np.ndarray, method: str = 'blur', **kwargs):
+def denoise(image: np.ndarray, method: str = 'blur', **kwargs):
     '''Conduct denoising on an image. 
     The method string dictates the denoising techinique used. 
     Keyword arguments are the ones used by that parcicular denoising technique.
     '''
     if method == 'blur':
-        img_denoised = cv2.blur(img, **kwargs)
+        image_denoised = cv2.blur(image, **kwargs)
     elif method == 'gaussian':
-        img_denoised = cv2.GaussianBlur(img, **kwargs)
+        image_denoised = cv2.GaussianBlur(image, **kwargs)
     elif method == 'median':
-        img_denoised = cv2.medianBlur(img, **kwargs)
+        image_denoised = cv2.medianBlur(image, **kwargs)
     elif method == 'fastNlMeans':
-        img_denoised = cv2.fastNlMeansDenoising(img, **kwargs)
+        image_denoised = cv2.fastNlMeansDenoising(image, **kwargs)
     elif method == 'bilateral':
-        img_denoised = cv2.bilateralFilter(img, **kwargs)
-    return img_denoised
+        image_denoised = cv2.bilateralFilter(image, **kwargs)
+    return image_denoised
 
 
-def edge_detect(img: np.ndarray, method: str):
+def edge_detect(image: np.ndarray, method: str):
     '''Conduct edge dectection on an image. 
     The method string dictates the edge detection techinique used.
     '''
     if method == 'canny':
-        edges = cv2.Canny(img, 40, 100, 3)
+        edges = cv2.Canny(image, 40, 100, 3)
     elif method == 'sobel16':
-        sobelx = cv2.Sobel(img, cv2.CV_16S, 1, 0, ksize=5,
+        sobelx = cv2.Sobel(image, cv2.CV_16S, 1, 0, ksize=5,
                            scale=1, delta=0, borderType=cv2.BORDER_DEFAULT)
-        sobely = cv2.Sobel(img, cv2.CV_16S, 0, 1, ksize=5,
+        sobely = cv2.Sobel(image, cv2.CV_16S, 0, 1, ksize=5,
                            scale=1, delta=0, borderType=cv2.BORDER_DEFAULT)
     elif method == 'sobel':
-        sobelx = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=5,
+        sobelx = cv2.Sobel(image, cv2.CV_64F, 1, 0, ksize=5,
                            scale=1, delta=0, borderType=cv2.BORDER_DEFAULT)
-        sobely = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=5,
+        sobely = cv2.Sobel(image, cv2.CV_64F, 0, 1, ksize=5,
                            scale=1, delta=0, borderType=cv2.BORDER_DEFAULT)
     else:
         print(r'Invalid method = {method}')
@@ -189,38 +189,38 @@ def edge_detect(img: np.ndarray, method: str):
 def edge_detect_multi(image_dict: Dict[str, np.ndarray], method: str):
     '''Conduct edge detection on a dictionary of images.
     '''
-    new_img_dict = {}
+    new_image_dict = {}
     method_str = method.title()
-    for label, img in image_dict.items():
+    for label, image in image_dict.items():
         new_label = f'{method_str} on {label}'
-        new_img_dict[new_label] = edge_detect(image_dict[label], method=method)
-    return new_img_dict
+        new_image_dict[new_label] = edge_detect(image_dict[label], method=method)
+    return new_image_dict
 
 
-def threshold(img: np.ndarray, method: str = 'adaptive_gaussian'):
+def threshold(image: np.ndarray, method: str = 'adaptive_gaussian'):
     '''Conduct thresholding on an image. 
     The method string dictates the thresholding techinique used, either adaptive Gaussian or Otsu.
     '''
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     if method == 'adaptive_gaussian':
-        img_threshold = cv2.adaptiveThreshold(
-            img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+        image_threshold = cv2.adaptiveThreshold(
+            image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
     else:
-        thresh, img_threshold = cv2.threshold(
-            img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    return img_threshold
+        thresh, image_threshold = cv2.threshold(
+            image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    return image_threshold
 
 
 def threshold_multi(image_dict: Dict[str, np.ndarray], method: str):
     '''Conduct thresholding on a dictionary of images.
     '''
-    new_img_dict = {}
+    new_image_dict = {}
     method_str = method.title()
-    for label, img in image_dict.items():
+    for label, image in image_dict.items():
         new_label = f'{method_str} on {label}'
-        new_img_dict[new_label] = threshold_image(
+        new_image_dict[new_label] = threshold_image(
             image_dict[label], method=method)
-    return new_img_dict
+    return new_image_dict
 
 
 def histogram(image: np.ndarray, figsize: Tuple[int, int] = (18, 18), filename: Optional[str] = None, visualisation = False):
