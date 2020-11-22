@@ -43,7 +43,7 @@ def watershed(img: np.ndarray, img_ori: np.ndarray, thresh=0.20, kernel: Tuple =
     
     #Replace label 0 piexels with lable -1
     markers = np.where(markers==0, -1, markers)
-    img_ori[markers == -1] = [0, 0, 255]
+    img_ori[markers == -1] = [255, 0, 0]
 
     return {
         'modified markers': markers,
